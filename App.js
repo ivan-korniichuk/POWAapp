@@ -1,20 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Home, BarChart, Slider, Help, Graph } from './screens/index';
+import ScreenHeaderButton from './components/ScreenHeaderButton'; // Adjust the path as needed
 
-export default function App() {
+const Stack = createStackNavigator();
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={({ navigation }) => ({
+          headerShadowVisible: false,
+          headerStyle: {
+            backgroundColor: '#02077E',
+          },
+          headerTintColor: '#ffffff',
+          headerRight: () => <ScreenHeaderButton navigation={navigation}/>
+        })}
+      >
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Help" component={Help} />
+        <Stack.Screen name="Graph" component={Graph} />
+        <Stack.Screen name="Slider" component={Slider} />
+        <Stack.Screen name="BarChart" component={BarChart} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
