@@ -3,10 +3,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Home, BarChart, Slider, Help, Graph } from './screens/index';
 import ScreenHeaderButton from './components/ScreenHeaderButton'; // Adjust the path as needed
-
+import {COLORS} from './constants/index'
+import { useFonts, JosefinSans_700Bold, JosefinSans_500Medium, JosefinSans_300Light } from '@expo-google-fonts/josefin-sans';
 const Stack = createStackNavigator();
 
 const App = () => {
+  let [fontsLoaded] = useFonts({
+    JosefinSans_700Bold,
+    JosefinSans_500Medium,
+    JosefinSans_300Light,
+  });
+
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -14,7 +21,7 @@ const App = () => {
         screenOptions={({ navigation }) => ({
           headerShadowVisible: false,
           headerStyle: {
-            backgroundColor: '#02077E',
+            backgroundColor: COLORS.primary,
           },
           headerTintColor: '#ffffff',
           headerRight: () => <ScreenHeaderButton navigation={navigation}/>
