@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Slider, Text} from '@rneui/themed';
+import { Slider, Text, Icon } from '@rneui/themed';
 
 type SlidersComponentProps = {};
 
@@ -20,9 +20,16 @@ return (
 
 </View>
 
-  <Text style = {styles.greyText}>Z-Score</Text>
+  <Text style = {styles.greyText}>Z-Score:</Text>
 
-
+<View style={{ flex: 0.1, flexDirection: 'column'}}>
+  <View style={{ flex: 1, flexDirection: 'row'}}>
+  <View style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style = {styles.rectangle}>
+    </View>
+  </View>
+</View>
+</View>
 
     <View style={[styles.contentView]}>
       <Slider
@@ -48,16 +55,19 @@ contentView: {
   width: '100%',
   justifyContent: 'center',
   alignItems: 'stretch',
+  marginTop: -39,
+  backgroundColor: '#C6C6C6'
+
 },
 
 subHeader: {
-  backgroundColor : "white",
   color : "#02077E",
   textAlign : "center",
   fontWeight : 700,
   fontSize : 20,
   fontFamily : "bahnschrift",
   paddingVertical :10,
+  backgroundColor: '#C6C6C6'
 },
 
 bodyText: {
@@ -80,15 +90,18 @@ greyText : {
   textAlign : "center",
   fontSize : 15,
   fontFamily : "bahnschrift",
-  paddingHorizontal : 15 
+  paddingHorizontal : 15,
+  backgroundColor: '#C6C6C6'
 },
 
 
   container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    alignContent: 'flex-start'
+    alignContent: 'flex-start',
+    backgroundColor: '#C6C6C6'
   },
+
   itemContainer: {
     width: '50%',
   },
@@ -101,8 +114,17 @@ greyText : {
     paddingHorizontal : 45,
     paddingVertical : 10,
     backgroundColor : "#02077E"
+  },
+
+  rectangle: {
+    width: 4,
+    height: 15,
+    color: "white",
   }
 });
+//});
+
+
 
 
 
