@@ -1,131 +1,186 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Slider, Text, Icon } from '@rneui/themed';
+import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native';
+import Slider from '@react-native-community/slider';
+import {Dimensions} from 'react-native';
 
-type SlidersComponentProps = {};
+const SelfReflection = () => {
+  const [perspective, setPerspective] = useState(0);
+  const [reflection, setReflection] = useState('');
+  const [answer, setAnswer] = useState(null);
 
-const Sliders: React.FunctionComponent<SlidersComponentProps> = () => {
-const [value, setValue] = useState(50);
-
-return (
-  <>
-    <Text style = {styles.pageHeading}>Self-Reflection</Text>
-
-    <Text style={styles.subHeader}>Perspective:</Text>
-
-
-    <View style={styles.container}>
-    <View style={styles.itemContainer}><Text style = {styles.bodyText}>{'Blinkered'}</Text></View>
-    <View style={styles.itemContainer}><Text style = {styles.bodyTextRight}>{'Unfocused'}</Text></View>
-
-</View>
-
-  <Text style = {styles.greyText}>Z-Score:</Text>
-
-<View style={{ flex: 0.1, flexDirection: 'column'}}>
-  <View style={{ flex: 1, flexDirection: 'row'}}>
-  <View style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-    <View style = {styles.rectangle}>
-    </View>
-  </View>
-</View>
-</View>
-
-    <View style={[styles.contentView]}>
-      <Slider
-        value={value}
-        onValueChange={setValue}
-        maximumValue={100}
-        minimumValue={0}
-        step={0.1}
-        maximumTrackTintColor = "#888AC0"
-        minimumTrackTintColor = "#888AC0"
-        trackStyle={{height: 5, borderRadius: 20}}
-        allowTouchTrack
-        thumbStyle={{ height: 15, width: 15, backgroundColor: "#02077E" }}
-      />
-    </View>
-  </>
-);
+  return (
+      <View style={styles.contentView}>
+        <Text style={styles.header}>Self-Reflection</Text>
+        <View style={styles.perspectiveContainer}>
+          <Text style={styles.perspectiveLabel}>Perspective:</Text>
+          <View style={styles.sliderLabels}>
+            <Text>Blinkered</Text>
+            <Text>Unfocused</Text>
+          </View>
+          <Slider
+              style={styles.slider}
+              minimumValue={-1}
+              maximumValue={1}
+              value={perspective}
+              onValueChange={(value) => setPerspective(value)}
+              minimumTrackTintColor="#888AC0"
+              maximumTrackTintColor="#888AC0"
+              thumbTintColor = "#02077E"
+              tapToSeek = "True"
+          />
+        </View>
+        <Text style={styles.description}>(Perspective description here)</Text>
+        <Text style={styles.askYourself}>Ask Yourself:</Text>
+        <View style={styles.questionBox}>
+          <Text style={styles.questionText}>Did you miss seeing the big picture and has this had a detrimental effect?</Text>
+        </View>
+        <View style={styles.buttonGroup}>
+          <TouchableOpacity
+              style={[styles.button, answer === 'yes' && styles.selectedButton]}
+              onPress={() => setAnswer('yes')}
+          >
+            <Text style={styles.buttonText}>Yes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+              style={[styles.button, answer === 'unsure' && styles.selectedButton]}
+              onPress={() => setAnswer('unsure')}
+          >
+            <Text style={styles.buttonText}>Unsure</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+              style={[styles.button, answer === 'no' && styles.selectedButton]}
+              onPress={() => setAnswer('no')}
+          >
+            <Text style={styles.buttonText}>No</Text>
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.indication}>This is a good indication that your reflection is accurate</Text>
+        <TextInput
+            style={styles.textInput}
+            placeholder="Add your own short notes and reflections here"
+            value={reflection}
+            onChangeText={setReflection}
+            multiline
+        />
+        <View style={styles.navigation}>
+          <Button onPress={() => {}} />
+          <Button onPress={() => {}} />
+        </View>
+      </View>
+  );
 };
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
-contentView: {
-  paddingHorizontal: 15,
-  width: '100%',
-  justifyContent: 'center',
-  alignItems: 'stretch',
-  marginTop: -39,
-  backgroundColor: '#C6C6C6'
 
-},
-
-subHeader: {
-  color : "#02077E",
-  textAlign : "center",
-  fontWeight : 700,
-  fontSize : 20,
-  fontFamily : "bahnschrift",
-  paddingVertical :10,
-  backgroundColor: '#C6C6C6'
-},
-
-bodyText: {
-  //textAlign : "left",
-  fontSize : 15,
-  fontFamily : "bahnschrift",
-  paddingHorizontal : 15 
-},
-
-bodyTextRight:{
-  textAlign : "right",
-  fontSize : 15,
-  fontFamily : "bahnschrift",
-  paddingHorizontal : 15 
-},
-
-greyText : {
-  color : "#939393",
-  fontWeight : 300,
-  textAlign : "center",
-  fontSize : 15,
-  fontFamily : "bahnschrift",
-  paddingHorizontal : 15,
-  backgroundColor: '#C6C6C6'
-},
-
-
-  container: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignContent: 'flex-start',
-    backgroundColor: '#C6C6C6'
+  contentView: {
+    width: windowWidth,
+    height: windowHeight,
+    alignItems: 'stretch',
+    backgroundColor: '#F5F5F5',
+    flex: 1,
   },
 
-  itemContainer: {
-    width: '50%',
-  },
-
-  pageHeading:{
+  header: {
+    fontWeight: 'bold',
+    textAlign: 'center',
+    textAlignVertical: 'top',
+    marginVertical: 10,
     color : "white",
     fontFamily : "bahnschrift",
-    fontWeight : 700,
     fontSize : 15,
-    paddingHorizontal : 45,
     paddingVertical : 10,
     backgroundColor : "#02077E"
   },
 
-  rectangle: {
-    width: 4,
-    height: 15,
-    color: "white",
-  }
+  perspectiveContainer: {
+    marginVertical: 5,
+  },
+
+  perspectiveLabel: {
+    color: "#02077E",
+    textAlign: "center",
+    fontWeight: 700,
+    fontSize: 20,
+    fontFamily: "bahnschrift",
+    paddingVertical: 5,
+  },
+
+  slider: {
+    height: 35,
+    width:windowWidth - 70,
+    alignSelf: 'center',
+  },
+
+  sliderLabels: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+  },
+
+  description: {
+    fontSize: 14,
+    paddingHorizontal: 10,
+  },
+  askYourself: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    color: "#02077E",
+  },
+  questionBox: {
+    backgroundColor: '#02077E',
+    borderRadius: 10,
+    margin: 10,
+  },
+  questionText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    textAlign: 'center',
+    padding: 10,
+  },
+  buttonGroup: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 10,
+  },
+  button: {
+    backgroundColor: '#888AC0',
+    padding: 10,
+    borderRadius: 5,
+    width: 80,
+    alignItems: 'center',
+  },
+  selectedButton: {
+    backgroundColor: '#02077E',
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  indication: {
+    textAlign: 'center',
+    fontSize: 14,
+    marginVertical: 5,
+  },
+  textInput: {
+    borderColor: '#02077E',
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    margin: 10,
+    height: 100,
+    textAlignVertical: 'top',
+  },
+  navigation: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    margin: 10,
+
+  },
 });
-//});
 
-
-
-
-
-export default Sliders;
+export default SelfReflection;
