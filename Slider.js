@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native';
 import Slider from '@react-native-community/slider';
 import {Dimensions} from 'react-native';
@@ -15,13 +16,14 @@ const SelfReflection = () => {
           <Text style={styles.perspectiveLabel}>Perspective:</Text>
           <View style={styles.sliderLabels}>
             <Text>Blinkered</Text>
+            <Text style = {styles.grey}>Z-Score:</Text>
             <Text>Unfocused</Text>
           </View>
           <Slider
               style={styles.slider}
-              minimumValue={-1}
+              minimumValue={0}
               maximumValue={1}
-              value={perspective}
+              value={0.5}
               onValueChange={(value) => setPerspective(value)}
               minimumTrackTintColor="#888AC0"
               maximumTrackTintColor="#888AC0"
@@ -29,6 +31,7 @@ const SelfReflection = () => {
               tapToSeek = "True"
           />
         </View>
+        <View style={[styles.midpoint, {backgroundColor: 'white', position: 'absolute', top: 123, left: (windowWidth - 5.5)/2, padding: 0}]} />
         <Text style={styles.description}>(Perspective description here)</Text>
         <Text style={styles.askYourself}>Ask Yourself:</Text>
         <View style={styles.questionBox}>
@@ -63,8 +66,32 @@ const SelfReflection = () => {
             multiline
         />
         <View style={styles.navigation}>
-          <Button onPress={() => {}} />
-          <Button onPress={() => {}} />
+          <Button
+          icon={
+            <Icon
+            name="arrow-right"
+            size={15}
+            color="white"
+            />
+          }
+          iconRight   
+          title="Back"
+          color = "#02077E"
+          />
+      
+          <Button
+          icon={
+            <Icon
+            name="arrow-right"
+            size={15}
+            color="white"
+            />
+          }
+          iconRight   
+          title="Next"
+          color = "#02077E"
+          />
+
         </View>
       </View>
   );
@@ -80,6 +107,7 @@ const styles = StyleSheet.create({
     height: windowHeight,
     alignItems: 'stretch',
     backgroundColor: '#F5F5F5',
+    fontFamily : "bahnschrift",
     flex: 1,
   },
 
@@ -89,14 +117,13 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
     marginVertical: 10,
     color : "white",
-    fontFamily : "bahnschrift",
     fontSize : 15,
     paddingVertical : 10,
     backgroundColor : "#02077E"
   },
 
   perspectiveContainer: {
-    marginVertical: 5,
+    marginVertical: 3,
   },
 
   perspectiveLabel: {
@@ -180,6 +207,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     margin: 10,
 
+  },
+  midpoint:{
+    width: 5,
+    height: 20,
+  },
+  grey:{
+    color:"#939393",
   },
 });
 
