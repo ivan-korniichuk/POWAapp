@@ -30,6 +30,7 @@ const CustomSlider = ({useSlider = false, mainLabel, leftLabel, rightLabel, defV
                     maximumTrackTintColor="#888AC0"
                     thumbTintColor = "#02077E"
                     tapToSeek = "True"
+                    disabled = {!useSlider}
             />
         </TouchableOpacity>
     );
