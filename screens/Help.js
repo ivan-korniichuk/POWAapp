@@ -78,7 +78,7 @@ const Help = ({ navigation }) => {
 
 
       </ScrollView>
-      <DefaultButton containerStyle={BarChartStyles.mainButton} text='Back' icon={<ArrowLeft color='#ffffff'/>} onTouch={() => navigation.navigate('Home')}/>
+      <DefaultButton containerStyle={BarChartStyles.mainButton} text="Back" icon={<ArrowLeft color='#ffffff'/>} onTouch={() => navigation.navigate("The POWA Model")}/>
     </View>
   );
 };

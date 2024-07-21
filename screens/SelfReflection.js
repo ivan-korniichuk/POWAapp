@@ -22,9 +22,9 @@ const SelfReflection = ({navigation}) => {
           <Text style={SelfReflectionStyles.questionText}>Did you miss seeing the big picture and has this had a detrimental effect?</Text>
         </View>
         <View style={SelfReflectionStyles.buttonGroup}>
-          <DefaultButton containerStyle={[HalfButtonStyles.container, {marginRight: 20}, SelfReflectionStyles.button, answer === 'yes' && SelfReflectionStyles.selectedButton]} text='Yes' onTouch={() => setAnswer('yes')}/>
-          <DefaultButton containerStyle={[HalfButtonStyles.container, {marginRight: 20}, SelfReflectionStyles.button, answer === 'unsure' && SelfReflectionStyles.selectedButton]} text='Unsure' onTouch={() => setAnswer('unsure')}/>
-          <DefaultButton containerStyle={[HalfButtonStyles.container, SelfReflectionStyles.button, answer === 'no' && SelfReflectionStyles.selectedButton]} text='No' onTouch={() => setAnswer('no')}/>
+          <DefaultButton containerStyle={[HalfButtonStyles.container, {marginRight: 20}, SelfReflectionStyles.button, answer === "yes" && SelfReflectionStyles.selectedButton]} text="Yes" onTouch={() => setAnswer("yes")}/>
+          <DefaultButton containerStyle={[HalfButtonStyles.container, {marginRight: 20}, SelfReflectionStyles.button, answer === "unsure" && SelfReflectionStyles.selectedButton]} text="Unsure" onTouch={() => setAnswer("unsure")}/>
+          <DefaultButton containerStyle={[HalfButtonStyles.container, SelfReflectionStyles.button, answer === "no" && SelfReflectionStyles.selectedButton]} text="No" onTouch={() => setAnswer("no")}/>
         </View>
         <Text style={SelfReflectionStyles.indication}>This is a good indication that your reflection is accurate</Text>
         <TextInput
@@ -36,8 +36,9 @@ const SelfReflection = ({navigation}) => {
         />
         </ScrollView>
         <View style={SelfReflectionStyles.navigation}>
-          <DefaultButton containerStyle={[HalfButtonStyles.container, {marginRight: 20}]} text='Back' onTouch={() => navigation.navigate('Home')}/>
-          <DefaultButton containerStyle={HalfButtonStyles.container} text='Next'/>
+          <DefaultButton containerStyle={[HalfButtonStyles.container, {marginRight: 20}]} text="Back" onTouch={() => navigation.navigate("The POWA Model")}/>
+            
+          <DefaultButton containerStyle={HalfButtonStyles.container} text="Next"/>
         </View>
       </View>
   );
