@@ -24,10 +24,10 @@ const DrawerNavigator = ({ navigation }) => {
       })}
       >
         <Drawer.Screen name="The POWA Model" component={Home} />
-        <Drawer.Screen name="Help" component={Help} />
-        <Drawer.Screen name="Graph" component={Graph} />
         <Drawer.Screen name="SelfReflection" component={SelfReflection} />
+        <Drawer.Screen name="Graph" component={Graph} />
         <Drawer.Screen name="BarChart" component={BarChart} />
+        <Drawer.Screen name="Help" component={Help} />
       </Drawer.Navigator>
   );
 };
