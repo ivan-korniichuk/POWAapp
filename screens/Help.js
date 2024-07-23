@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import { DefaultButton } from '../components/index';
 import { ArrowLeft } from 'react-native-feather';
-import { BarChartStyles, HelpStyles } from '../styles/index.style';
+import { BarChartStyles, HelpStyles, ScrollViewStyles } from '../styles/index.style';
 
 const Help = ({ navigation }) => {
 
@@ -12,7 +12,7 @@ const Help = ({ navigation }) => {
 
   return (
     <View style={BarChartStyles.container}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={ScrollViewStyles.scrollViewContent} style={ScrollViewStyles.scrollView}>
       
       <Text style={HelpStyles.subTitle}>
         Introduction:
