@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react';
 import { View, ScrollView, Text, StyleSheet } from 'react-native';
 import { DefaultButton, TimeSelector, BarChartComp, ToogleButton, ColoredToggleButton } from '../components/index';
 import { ArrowLeft } from 'react-native-feather';
-import { BarChartStyles } from '../styles/index.style';
+import { BarChartStyles, ScrollViewStyles } from '../styles/index.style';
 
 const BarChart = ({navigation}) => {
   const [barValues, setBarValues] = useState([0,0,0,0]);
@@ -69,7 +69,7 @@ const BarChart = ({navigation}) => {
     <View style={BarChartStyles.container}>
       <TimeSelector onSelect={( buttonName ) => {onSelect(buttonName)}}/>
 
-      <ScrollView>
+      <ScrollView contentContainerStyle={ScrollViewStyles.scrollViewContent} style={ScrollViewStyles.scrollView}>
         <BarChartComp barChartValues={barValues}/>
 
         <View style={styles.progress}>
