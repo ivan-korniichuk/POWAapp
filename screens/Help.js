@@ -7,7 +7,7 @@ import { BarChartStyles, HelpStyles } from '../styles/index.style';
 const Help = ({ navigation }) => {
 
   const handleButtonPress = () => {
-    console.log('Button pressed');
+    console.log("Button pressed");
   };
 
   return (
@@ -78,7 +78,7 @@ const Help = ({ navigation }) => {
 
 
       </ScrollView>
-      <DefaultButton containerStyle={BarChartStyles.mainButton} text="Back" icon={<ArrowLeft color='#ffffff'/>} onTouch={() => navigation.navigate("The POWA Model")}/>
+      <DefaultButton containerStyle={BarChartStyles.mainButton} text="Back" icon={<ArrowLeft color="#ffffff"/>} onTouch={() => navigation.navigate("The POWA Model")}/>
     </View>
   );
 };
