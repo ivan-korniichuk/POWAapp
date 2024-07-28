@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import { View, ScrollView, Text, StyleSheet } from 'react-native';
 import { DefaultButton, TimeSelector, BarChartComp, ToogleButton, ColoredToggleButton } from '../components/index';
 import { ArrowLeft } from 'react-native-feather';
@@ -8,11 +8,15 @@ const BarChart = ({navigation}) => {
   const [barValues, setBarValues] = useState([0,0,0,0]);
   const [features, setFeatures] = useState(["","",""]);
 
+  useEffect(() => {
+    onSelect("");
+  }, []);
+
   function updateBarValues (newValues) {
     if (newValues.length === 4) {
-      console.log('update')
-      setFeatures(analyseValues(newValues))
-      setBarValues(newValues)
+      console.log("update");
+      setFeatures(analyseValues(newValues));
+      setBarValues(newValues);
     }
   }
 
@@ -79,7 +83,7 @@ const BarChart = ({navigation}) => {
         <Text style={[styles.text, styles.line]}>Most deficient feature: {features[2]}</Text>
       </ScrollView>
 
-      <DefaultButton icon={<ArrowLeft color='#ffffff'/>} text='Back' onTouch={() => navigation.navigate('Home')}/>
+      <DefaultButton icon={<ArrowLeft color="#ffffff"/>} text="Back" onTouch={() => navigation.navigate("The POWA Model")}/>
 
     </View>
   );

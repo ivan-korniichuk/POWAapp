@@ -73,7 +73,7 @@ const Graph = ({navigation}) => {
       </View>
       </ScrollView>
 
-      <DefaultButton icon={<ArrowLeft color='#ffffff'/>} text='Back' onTouch={() => navigation.navigate('Home')}/>
+      <DefaultButton icon={<ArrowLeft color="#ffffff"/>} text="Back" onTouch={() => navigation.navigate("The POWA Model")}/>
 
     </View>
   );
