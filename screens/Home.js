@@ -13,18 +13,18 @@ const Home = ({navigation}) => {
       />
       <CustomSlider 
         mainLabel={"Other-Centred"} leftLabel={"Self-serving"}
-        rightLabel={"Servile"} onValueChange={() => navigation.navigate('SelfReflection')}
-        onTouch={() => navigation.navigate('SelfReflection')}
+        rightLabel={"Servile"} onValueChange={() => navigation.navigate('OtherCentred')}
+        onTouch={() => navigation.navigate('OtherCentred')}
       />
       <CustomSlider 
         mainLabel={"Willingness to Learn"} leftLabel={"Closed-minded"}
-        rightLabel={"Scatterbrain"} onValueChange={() => navigation.navigate('SelfReflection')}
-        onTouch={() => navigation.navigate('SelfReflection')}
+        rightLabel={"Scatterbrain"} onValueChange={() => navigation.navigate('WillingnessToLearn')}
+        onTouch={() => navigation.navigate('WillingnessToLearn')}
       />
       <CustomSlider 
         mainLabel={"Accurate Self-Assessment"} leftLabel={"Self Denigration"}
-        rightLabel={"Arrogant"} onValueChange={() => navigation.navigate('SelfReflection')}
-        onTouch={() => navigation.navigate('SelfReflection')}
+        rightLabel={"Arrogant"} onValueChange={() => navigation.navigate('AccurateSelfAssessment')}
+        onTouch={() => navigation.navigate('AccurateSelfAssessment')}
       />
       <DefaultButton 
         icon={<Image source={require('../assets/icon3.png')} 
