@@ -9,4 +9,4 @@ git clone https://github.com/ivan-korniichuk/POWAapp
 Then, `cd POWAapp` and run `npm install` to install the required dependencies. Finally, run `npm start` to run the app.
 
 ## Contributing
-To contribute to the repository, fork the repository, make a new branch (named something relevant to the feature you are adding / bug you are trying to fix), commit any changes you want to commit to your repository, and then send in a pull request to this repository.
+To contribute to the repository, make a new branch (named something relevant to the feature you are adding / bug you are trying to fix), commit any changes you want to commit to your branch, and then send in a pull request to the main branch.
