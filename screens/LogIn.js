@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { DataSyncManager } from '../Storage/dataService';
+import { DefaultButton } from '../components'
 
 const Login = ({ navigation, setIsAuthenticated }) => {
   const [email, setEmail] = useState('');
@@ -36,6 +37,7 @@ const Login = ({ navigation, setIsAuthenticated }) => {
         secureTextEntry
       />
       <Button title="Log In" onPress={handleLogin} />
+      <DefaultButton containerStyle={styles.loginButton} text="Log In" onTouch={handleLogin} />
       <Text
         style={styles.link}
         onPress={() => navigation.navigate('SignUp')}
@@ -63,6 +65,10 @@ const styles = StyleSheet.create({
   link: {
     marginTop: 10,
     color: 'blue',
+  },
+  loginButton: {
+    paddingLeft: 10,
+    paddingRight: 10,
   },
 });
 
