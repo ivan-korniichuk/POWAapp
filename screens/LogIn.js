@@ -6,11 +6,12 @@ import { DefaultButton } from '../components'
 const Login = ({ navigation, setIsAuthenticated }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const { auth, login } = DataSyncManager();
 
   useEffect(() => {
-    handleAuth();
+    void handleAuth();
   }, []);
 
   async function handleAuth() {
@@ -18,7 +19,19 @@ const Login = ({ navigation, setIsAuthenticated }) => {
   }
 
   async function handleLogin() {
-    setIsAuthenticated(await login(email, password));
+    const response = await login(email, password);
+    setIsAuthenticated(response === "");
+    setErrorMessage(response);
+  }
+
+  function changeEmailInput(newEmail) {
+    setEmail(newEmail);
+    setErrorMessage("");
+  }
+
+  function changePasswordInput(newPassword) {
+    setPassword(newPassword);
+    setErrorMessage("");
   }
 
   return (
@@ -27,16 +40,16 @@ const Login = ({ navigation, setIsAuthenticated }) => {
         style={styles.input}
         placeholder="Email"
         value={email}
-        onChangeText={setEmail}
+        onChangeText={changeEmailInput}
       />
       <TextInput
         style={styles.input}
         placeholder="Password"
         value={password}
-        onChangeText={setPassword}
+        onChangeText={changePasswordInput}
         secureTextEntry
       />
-      <Button title="Log In" onPress={handleLogin} />
+      {errorMessage === '' ? null : <Text style={styles.error}>{errorMessage}</Text>}
       <DefaultButton containerStyle={styles.loginButton} text="Log In" onTouch={handleLogin} />
       <Text
         style={styles.link}
@@ -70,6 +83,10 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
   },
+  error: {
+    color: 'red',
+    marginBottom: 15,
+  }
 });
 
 export default Login;

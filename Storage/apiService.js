@@ -37,11 +37,10 @@ export const handleLogin = async (email, password) => {
         const data = await response.json();
         const jwt = response.headers.get('Authorization');
 
-        if (data._id) {
-          return {...data, jwt};
-        }
+        return {...data, jwt};
     } catch (error) {
         console.error('Error logging in:', error);
+        return {message: error}
     }
 };
 
@@ -63,10 +62,9 @@ export const handleSignUp = async (username, email, password) => {
       console.log(data)
       const jwt = response.headers.get('Authorization');
 
-      if (data._id) {
-        return {...data, jwt};
-      }
+      return {...data, jwt};
   } catch (error) {
       console.error('Error signing in:', error);
+      return {message: error}
   }
 };

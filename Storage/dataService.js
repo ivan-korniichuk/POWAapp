@@ -18,22 +18,21 @@ export const DataSyncManager = () => {
  
   const login = async (email, password) => {
     const responce = await handleLogin(email, password);
-    if (responce) {
+    if (!Object.hasOwn(responce, 'message')) {
       await setNewUser(responce.username, responce.email, responce.jwt);
-      return true;
+      return "";
     }
-  
-    return false;
+    return responce.message;
   }
   
   const signUp = async (username, email, password) => {
     const responce = await handleSignUp(username, email, password);
-    if (responce) {
+    if (!Object.hasOwn(responce, 'message')) {
       await setNewUser(responce.username, responce.email, responce.jwt);
-      return true;
+      return "";
     }
   
-    return false;
+    return responce.message;
   }
 
   return {
