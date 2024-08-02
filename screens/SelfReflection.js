@@ -1,46 +1,142 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, ScrollView } from 'react-native';
-import { DefaultButton, CustomSlider } from '../components/index';
-import { SelfReflectionStyles, HalfButtonStyles, BarChartStyles } from '../styles/index.style';
+// SelfReflection.js
 
-const SelfReflection = ({navigation}) => {
-  const [perspective, setPerspective] = useState(0);
-  const [reflection, setReflection] = useState('');
-  const [answer, setAnswer] = useState("unsure");
+import React, { useState, useEffect } from 'react';
+import { View } from 'react-native';
+import { AccurateSelfAssessment, OtherCentred, Perspective, WillingnessToLearn } from '../contents/index';
+import { SelfReflectionStyles, HalfButtonStyles, Default } from '../styles/index.style';
+import { DefaultButton } from '../components/index';
+import { useFocusEffect } from '@react-navigation/native';
+
+const pages = [
+  'AccurateSelfAssessment',
+  'OtherCentred',
+  'Perspective',
+  'WillingnessToLearn'
+];
+
+const SelfReflection = ({ route, navigation }) => {
+  const { initialPage, reset } = route.params || {};
+  const [responses, setResponses] = useState({
+    AccurateSelfAssessment: { value: 0, comment: '' },
+    OtherCentred: { value: 0, comment: '' },
+    Perspective: { value: 0, comment: '' },
+    WillingnessToLearn: { value: 0, comment: '' },
+  });
+
+  const [visited, setVisited] = useState({
+    AccurateSelfAssessment: false,
+    OtherCentred: false,
+    Perspective: false,
+    WillingnessToLearn: false
+  });
+
+  const [currentPage, setCurrentPage] = useState(initialPage || 'AccurateSelfAssessment');
+
+  // Ensure that the currentPage is updated when the screen is focused
+  useFocusEffect(
+    React.useCallback(() => {
+      if (reset) {
+        setResponses({
+          AccurateSelfAssessment: { value: 0, comment: '' },
+          OtherCentred: { value: 0, comment: '' },
+          Perspective: { value: 0, comment: '' },
+          WillingnessToLearn: { value: 0, comment: '' },
+        });
+        setVisited({
+          AccurateSelfAssessment: false,
+          OtherCentred: false,
+          Perspective: false,
+          WillingnessToLearn: false
+        });
+        setCurrentPage('AccurateSelfAssessment');
+      } else if (initialPage) {
+        setCurrentPage(initialPage);
+      }
+    }, [initialPage, reset])
+  );
+
+  useEffect(() => {
+    setVisited(prev => ({ ...prev, [currentPage]: true }));
+  }, [currentPage]);
+
+  const handleResponseChange = (key, field, value) => {
+    setResponses(prev => ({
+      ...prev,
+      [key]: {
+        ...prev[key],
+        [field]: value
+      }
+    }));
+  };
+
+  const isLastPage = () => {
+    const remainingPages = pages.filter(page => !visited[page]);
+    return remainingPages.length === 0;
+  };
+
+  const renderPageContent = (page) => {
+    switch (page) {
+      case 'AccurateSelfAssessment':
+        return (
+          <AccurateSelfAssessment
+            response={responses.AccurateSelfAssessment}
+            handleResponseChange={(field, value) => handleResponseChange('AccurateSelfAssessment', field, value)}
+          />
+        );
+      case 'OtherCentred':
+        return (
+          <OtherCentred
+            response={responses.OtherCentred}
+            handleResponseChange={(field, value) => handleResponseChange('OtherCentred', field, value)}
+          />
+        );
+      case 'Perspective':
+        return (
+          <Perspective
+            response={responses.Perspective}
+            handleResponseChange={(field, value) => handleResponseChange('Perspective', field, value)}
+          />
+        );
+      case 'WillingnessToLearn':
+        return (
+          <WillingnessToLearn
+            response={responses.WillingnessToLearn}
+            handleResponseChange={(field, value) => handleResponseChange('WillingnessToLearn', field, value)}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  const handleNext = () => {
+    if (isLastPage()) {
+      console.log(responses); // or perform save action here
+      navigation.navigate('Home');
+    } else {
+      const nextPage = pages.find(page => !visited[page]);
+      if (nextPage) {
+        setCurrentPage(nextPage);
+      }
+    }
+  };
 
   return (
-      <View style={BarChartStyles.container}>
-        <ScrollView style={SelfReflectionStyles.container}>
-        <CustomSlider 
-          mainLabel={"Perspective"} leftLabel={"Blinkered"} 
-          rightLabel={"Unfocused"} onValueChange={setPerspective}
-          useSlider={true}
+    <View style={Default.container}>
+      {renderPageContent(currentPage)}
+      <View style={SelfReflectionStyles.navigation}>
+        <DefaultButton
+          containerStyle={[HalfButtonStyles.container, { marginRight: 20 }]}
+          text="Back"
+          onTouch={() => navigation.goBack()}
         />
-        <Text style={SelfReflectionStyles.description}>(Perspective description here)</Text>
-        <Text style={SelfReflectionStyles.askYourself}>Ask Yourself:</Text>
-        <View style={SelfReflectionStyles.questionBox}>
-          <Text style={SelfReflectionStyles.questionText}>Did you miss seeing the big picture and has this had a detrimental effect?</Text>
-        </View>
-        <View style={SelfReflectionStyles.buttonGroup}>
-          <DefaultButton containerStyle={[HalfButtonStyles.container, {marginRight: 20}, SelfReflectionStyles.button, answer === "yes" && SelfReflectionStyles.selectedButton]} text="Yes" onTouch={() => setAnswer("yes")}/>
-          <DefaultButton containerStyle={[HalfButtonStyles.container, {marginRight: 20}, SelfReflectionStyles.button, answer === "unsure" && SelfReflectionStyles.selectedButton]} text="Unsure" onTouch={() => setAnswer("unsure")}/>
-          <DefaultButton containerStyle={[HalfButtonStyles.container, SelfReflectionStyles.button, answer === "no" && SelfReflectionStyles.selectedButton]} text="No" onTouch={() => setAnswer("no")}/>
-        </View>
-        <Text style={SelfReflectionStyles.indication}>This is a good indication that your reflection is accurate</Text>
-        <TextInput
-            style={SelfReflectionStyles.textInput}
-            placeholder="Add your own short notes and reflections here"
-            value={reflection}
-            onChangeText={setReflection}
-            multiline
+        <DefaultButton
+          containerStyle={HalfButtonStyles.container}
+          text={isLastPage() ? "Save" : "Next"}
+          onTouch={handleNext}
         />
-        </ScrollView>
-        <View style={SelfReflectionStyles.navigation}>
-          <DefaultButton containerStyle={[HalfButtonStyles.container, {marginRight: 20}]} text="Back" onTouch={() => navigation.navigate("The POWA Model")}/>
-            
-          <DefaultButton containerStyle={HalfButtonStyles.container} text="Next"/>
-        </View>
       </View>
+    </View>
   );
 };
 
