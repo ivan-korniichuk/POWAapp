@@ -7,3 +7,4 @@ export { default as SelfReflectionStyles } from './SelfReflection.style';
 export { default as TimeSelectionButtonStyles } from './TimeSelectionButton.style';
 export { default as HelpStyles } from './Help.style';
 export { default as ScrollViewStyles } from './ScrollView.style';
+export { default as Default } from './Default.style';

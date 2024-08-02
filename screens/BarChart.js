@@ -74,7 +74,7 @@ const BarChart = ({navigation}) => {
 
         <View style={styles.progress}>
           <Text style={styles.text}>Show Progress Direction</Text>
-          <ColoredToggleButton untoggledBackgroundColor={"white"} toggledBackgroundColor={"#3FCBB0"} toggled={false} onPress={()=>{}}/>
+          <ColoredToggleButton untoggledBackgroundColor={'white'} toggledBackgroundColor={'#3FCBB0'} toggled={false} onPress={()=>{}}/>
         </View>
 
         <Text style={BarChartStyles.mainText}>General:</Text>
@@ -83,7 +83,7 @@ const BarChart = ({navigation}) => {
         <Text style={[styles.text, styles.line]}>Most deficient feature: {features[2]}</Text>
       </ScrollView>
 
-      <DefaultButton icon={<ArrowLeft color="#ffffff"/>} text="Back" onTouch={() => navigation.navigate("The POWA Model")}/>
+      <DefaultButton icon={<ArrowLeft color='#ffffff'/>} text='Back' onTouch={() => navigation.navigate('Home')}/>
 
     </View>
   );
