@@ -1,7 +1,7 @@
 import { React, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { DefaultButton, TimeSelector, ColoredToggleButton, ProgressGraphComp } from '../components/index';
-import { GraphStyles } from '../styles/index.style';
+import { GraphStyles, ScrollViewStyles } from '../styles/index.style';
 import { ArrowLeft } from 'react-native-feather';
 
 function generateRandomStatValuesList(count) {
@@ -41,7 +41,7 @@ const Graph = ({navigation}) => {
 
       <TimeSelector onSelect={( buttonName ) => {onSelect(buttonName)}}/>
 
-      <ScrollView>
+      <ScrollView contentContainerStyle={ScrollViewStyles.scrollViewContent} style={ScrollViewStyles.scrollView}>
 
       <ProgressGraphComp statValues={statValues} toggledViews={toggledViews} />
 
