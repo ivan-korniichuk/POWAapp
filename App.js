@@ -25,7 +25,6 @@ const AuthenticatedDrawer = () => (
     <Drawer.Screen name="Graph" component={Graph} />
     <Drawer.Screen name="SelfReflection" component={SelfReflection} />
     <Drawer.Screen name="BarChart" component={BarChart} />
-    <Drawer.Screen name="TestLocalStorage" component={TestLocalStorage} />
   </Drawer.Navigator>
 );
 
