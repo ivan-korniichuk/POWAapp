@@ -22,7 +22,7 @@ export const DataSyncManager = () => {
       await setNewUser(responce.username, responce.email, responce.jwt);
       return "";
     }
-    return responce.message;
+    return typeof Object.hasOwn(responce.message, 'name') && responce.message.name === "TypeError" ? "Unable to connect to the server, please try again later." : responce.message;
   }
   
   const signUp = async (username, email, password) => {
@@ -31,8 +31,8 @@ export const DataSyncManager = () => {
       await setNewUser(responce.username, responce.email, responce.jwt);
       return "";
     }
-  
-    return responce.message;
+
+    return typeof Object.hasOwn(responce.message, 'name') && responce.message.name === "TypeError" ? "Unable to connect to the server, please try again later." : responce.message;
   }
 
   return {
