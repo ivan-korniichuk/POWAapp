@@ -45,7 +45,7 @@ const Login = ({ navigation, setIsAuthenticated }) => {
           Enter your credentials to login
         </Text>
       </View>
-      <View>
+      <View style={styles.inputBoxes}>
         <TextInput
           style={styles.input}
           placeholder="Email"
@@ -94,11 +94,13 @@ const styles = StyleSheet.create({
   loginButton: {
     paddingLeft: 10,
     paddingRight: 10,
-    height: 50
+    height: 50,
+    width: 250,
   },
   error: {
     color: 'red',
     marginBottom: 15,
+    width: 250,
   },
   welcome: {
     fontSize: 35,
@@ -110,7 +112,10 @@ const styles = StyleSheet.create({
   },
   loginText: {
     alignItems: 'center',
-  }
+  },
+  inputBoxes: {
+    alignItems: 'center',
+  },
 });
 
 export default Login;

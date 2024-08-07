@@ -43,7 +43,7 @@ const SignIn = ({ navigation, setIsAuthenticated }) => {
           Create your account
         </Text>
       </View>
-      <View>
+      <View style={styles.inputBoxes}>
         <TextInput
           style={styles.input}
           placeholder="Name"
@@ -100,11 +100,12 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     height: 50,
+    width: 235,
   },
   error: {
     color: 'red',
-    width: '75%',
     marginBottom: 20,
+    width: 235,
   },
   signUpText: {
     alignItems: "center"
@@ -115,6 +116,9 @@ const styles = StyleSheet.create({
   },
   createText: {
     fontSize: 15
+  },
+  inputBoxes: {
+    alignItems: "center",
   }
 });
 
