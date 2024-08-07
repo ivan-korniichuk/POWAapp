@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { DataSyncManager } from '../Storage/dataService';
 import { DefaultButton } from '../components'
+import { COLORS } from '../constants'
 
 const Login = ({ navigation, setIsAuthenticated }) => {
   const [email, setEmail] = useState('');
@@ -36,21 +37,31 @@ const Login = ({ navigation, setIsAuthenticated }) => {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={changeEmailInput}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={changePasswordInput}
-        secureTextEntry
-      />
-      {errorMessage === '' ? null : <Text style={styles.error}>{errorMessage}</Text>}
-      <DefaultButton containerStyle={styles.loginButton} text="Log In" onTouch={handleLogin} />
+      <View style={styles.loginText}>
+        <Text style={styles.welcome}>
+          Welcome Back
+        </Text>
+        <Text style={styles.credentials}>
+          Enter your credentials to login
+        </Text>
+      </View>
+      <View>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={changeEmailInput}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={password}
+          onChangeText={changePasswordInput}
+          secureTextEntry
+        />
+        {errorMessage === '' ? null : <Text style={styles.error}>{errorMessage}</Text>}
+        <DefaultButton containerStyle={styles.loginButton} text="Log In" onTouch={handleLogin} />
+      </View>
       <Text
         style={styles.link}
         onPress={() => navigation.navigate('SignUp')}
@@ -64,16 +75,17 @@ const Login = ({ navigation, setIsAuthenticated }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingVertical: 100,
   },
   input: {
-    width: 200,
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
+    width: 250,
+    height: 50,
     marginBottom: 10,
     paddingHorizontal: 10,
+    borderRadius: 10,
+    backgroundColor: `${COLORS.primary}20`,
   },
   link: {
     marginTop: 10,
@@ -82,10 +94,22 @@ const styles = StyleSheet.create({
   loginButton: {
     paddingLeft: 10,
     paddingRight: 10,
+    height: 50
   },
   error: {
     color: 'red',
     marginBottom: 15,
+  },
+  welcome: {
+    fontSize: 35,
+    fontWeight: "600",
+  },
+  credentials: {
+    fontSize: 13,
+    marginBottom: 15,
+  },
+  loginText: {
+    alignItems: 'center',
   }
 });
 

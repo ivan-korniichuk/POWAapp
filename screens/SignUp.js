@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { DataSyncManager } from '../Storage/dataService';
 import { DefaultButton } from '../components/index'
+import { COLORS } from '../constants'
 
 const SignIn = ({ navigation, setIsAuthenticated }) => {
   const [username, setUsername] = useState('');
@@ -34,27 +35,38 @@ const SignIn = ({ navigation, setIsAuthenticated }) => {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Name"
-        value={username}
-        onChangeText={editName}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={editEmail}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={editPassword}
-        secureTextEntry
-      />
-      {errorMessage === "" ? null : <Text style={styles.error}>{errorMessage}</Text>}
-      <DefaultButton containerStyle={styles.signUpButton} text="Sign Up" onTouch={handleSignUp} />
+      <View style={styles.signUpText}>
+        <Text style={styles.signIn}>
+          Sign Up
+        </Text>
+        <Text style={styles.createText}>
+          Create your account
+        </Text>
+      </View>
+      <View>
+        <TextInput
+          style={styles.input}
+          placeholder="Name"
+          value={username}
+          onChangeText={editName}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={editEmail}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={password}
+          onChangeText={editPassword}
+          secureTextEntry
+          passwordRules="minlength: 8; required: lower; required: upper; required: digit; required: special;"
+        />
+        {errorMessage === "" ? null : <Text style={styles.error}>{errorMessage}</Text>}
+        <DefaultButton containerStyle={styles.signUpButton} text="Sign Up" onTouch={handleSignUp} />
+      </View>
       <Text
         style={styles.link}
         onPress={() => navigation.navigate('Login')}
@@ -68,16 +80,17 @@ const SignIn = ({ navigation, setIsAuthenticated }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    marginVertical: 100
   },
   input: {
-    width: 200,
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
+    width: 235,
+    height: 50,
     marginBottom: 10,
     paddingHorizontal: 10,
+    borderRadius: 10,
+    backgroundColor: `${COLORS.primary}20`
   },
   link: {
     marginTop: 10,
@@ -86,12 +99,23 @@ const styles = StyleSheet.create({
   signUpButton: {
     paddingLeft: 10,
     paddingRight: 10,
+    height: 50,
   },
   error: {
     color: 'red',
     width: '75%',
     marginBottom: 20,
   },
+  signUpText: {
+    alignItems: "center"
+  },
+  signIn: {
+    fontSize: 40,
+    fontWeight: "bold"
+  },
+  createText: {
+    fontSize: 15
+  }
 });
 
 export default SignIn;
