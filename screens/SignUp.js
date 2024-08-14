@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
-import { DataSyncManager } from '../Storage/dataService';
+import { DataSyncManager } from '../storage/dataService';
 import { DefaultButton } from '../components/index'
 import { COLORS } from '../constants'
 

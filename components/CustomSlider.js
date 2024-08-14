@@ -1,6 +1,6 @@
 import Slider from '@react-native-community/slider';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CustomSliderStyle from "../styles/CustomSlider.style"
 
 const CustomSlider = ({useSlider = false, mainLabel, leftLabel, rightLabel, defValue = 0, onValueChange, onTouch}) => {
@@ -9,6 +9,10 @@ const CustomSlider = ({useSlider = false, mainLabel, leftLabel, rightLabel, defV
     function changeValue(value) {
         setValue(value.toFixed(1))
     }
+
+    useEffect(() => {
+        setValue(defValue);
+    }, [defValue])
 
     return (
         <TouchableOpacity style={CustomSliderStyle.container} onPress={() => {onTouch && onTouch()}}>
@@ -25,7 +29,7 @@ const CustomSlider = ({useSlider = false, mainLabel, leftLabel, rightLabel, defV
                     minimumValue={-10}
                     maximumValue={10}
                     value={value}
-                    onValueChange={(value) => {onValueChange && onValueChange(value); useSlider && changeValue(value);}}
+                    onValueChange={(value) => {onValueChange && onValueChange(parseFloat(value.toFixed(1))); useSlider && changeValue(value);}}
                     minimumTrackTintColor="#888AC0"
                     maximumTrackTintColor="#888AC0"
                     thumbTintColor = "#02077E"

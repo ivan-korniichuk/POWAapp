@@ -10,7 +10,7 @@ const AccurateSelfAssessment = ({ response, handleResponseChange }) => {
         mainLabel={"Accurate Self-Assessment"} leftLabel={"Self Denigration"} 
         rightLabel={"Arrogant"} 
         onValueChange={(value) => handleResponseChange('value', value)}
-        value={response.value}
+        defValue={response.value}
         useSlider={true}
       />
       <Text style={SelfReflectionStyles.description}>(Accurate self-assessment description here)</Text>
@@ -20,17 +20,17 @@ const AccurateSelfAssessment = ({ response, handleResponseChange }) => {
       </View>
       <View style={SelfReflectionStyles.buttonGroup}>
         <DefaultButton 
-          containerStyle={[HalfButtonStyles.container, {marginRight: 20}, SelfReflectionStyles.button, response.number === 1 && SelfReflectionStyles.selectedButton]} 
+          containerStyle={[HalfButtonStyles.container, {marginRight: 20}, SelfReflectionStyles.button, 2 === 1 && SelfReflectionStyles.selectedButton]} 
           text="1" 
           onTouch={() => handleResponseChange('number', 1)}
         />
         <DefaultButton 
-          containerStyle={[HalfButtonStyles.container, {marginRight: 20}, SelfReflectionStyles.button, response.number === 2 && SelfReflectionStyles.selectedButton]} 
+          containerStyle={[HalfButtonStyles.container, {marginRight: 20}, SelfReflectionStyles.button, 2 === 2 && SelfReflectionStyles.selectedButton]} 
           text="2" 
           onTouch={() => handleResponseChange('number', 2)}
         />
         <DefaultButton 
-          containerStyle={[HalfButtonStyles.container, SelfReflectionStyles.button, response.number === 3 && SelfReflectionStyles.selectedButton]} 
+          containerStyle={[HalfButtonStyles.container, SelfReflectionStyles.button, 2 === 3 && SelfReflectionStyles.selectedButton]} 
           text="3" 
           onTouch={() => handleResponseChange('number', 3)}
         />
