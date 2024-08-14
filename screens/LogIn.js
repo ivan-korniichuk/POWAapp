@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
-import { DataSyncManager } from '../Storage/dataService';
+import { DataSyncManager } from '../storage/dataService';
 import { DefaultButton } from '../components'
 import { COLORS } from '../constants'
 
@@ -12,7 +12,7 @@ const Login = ({ navigation, setIsAuthenticated }) => {
   const { auth, login } = DataSyncManager();
 
   useEffect(() => {
-    void handleAuth();
+    handleAuth();
   }, []);
 
   async function handleAuth() {

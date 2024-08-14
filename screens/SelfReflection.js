@@ -1,11 +1,11 @@
-// SelfReflection.js
-
-import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Alert } from 'react-native';
 import { AccurateSelfAssessment, OtherCentred, Perspective, WillingnessToLearn } from '../contents/index';
 import { SelfReflectionStyles, HalfButtonStyles, Default } from '../styles/index.style';
 import { DefaultButton } from '../components/index';
 import { useFocusEffect } from '@react-navigation/native';
+import { useData } from '../storage/storageService';
+import { DataSyncManager } from '../storage/dataService';
 
 const pages = [
   'AccurateSelfAssessment',
@@ -15,7 +15,11 @@ const pages = [
 ];
 
 const SelfReflection = ({ route, navigation }) => {
+  const { lastReport } = useData();
+  const { addReport, updateExistingReport } = DataSyncManager();
   const { initialPage, reset } = route.params || {};
+
+  const [isNewReport, setIsNewReport] = useState(true);
   const [responses, setResponses] = useState({
     AccurateSelfAssessment: { value: 0, comment: '' },
     OtherCentred: { value: 0, comment: '' },
@@ -23,19 +27,24 @@ const SelfReflection = ({ route, navigation }) => {
     WillingnessToLearn: { value: 0, comment: '' },
   });
 
-  const [visited, setVisited] = useState({
+  const initialVisitedState = {
     AccurateSelfAssessment: false,
     OtherCentred: false,
     Perspective: false,
-    WillingnessToLearn: false
-  });
+    WillingnessToLearn: false,
+  };
+
+  const [visited, setVisited] = useState(initialVisitedState);
+  const [visitedBackup, setVisitedBackup] = useState(initialVisitedState);
 
   const [currentPage, setCurrentPage] = useState(initialPage || 'AccurateSelfAssessment');
+  const [history, setHistory] = useState([initialPage || 'AccurateSelfAssessment']);
 
-  // Ensure that the currentPage is updated when the screen is focused
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       if (reset) {
+        setIsNewReport(true);
+        setVisitedBackup(visited);
         setResponses({
           AccurateSelfAssessment: { value: 0, comment: '' },
           OtherCentred: { value: 0, comment: '' },
@@ -43,20 +52,38 @@ const SelfReflection = ({ route, navigation }) => {
           WillingnessToLearn: { value: 0, comment: '' },
         });
         setVisited({
-          AccurateSelfAssessment: false,
+          AccurateSelfAssessment: true, // Set first page to visited
           OtherCentred: false,
           Perspective: false,
           WillingnessToLearn: false
         });
         setCurrentPage('AccurateSelfAssessment');
-      } else if (initialPage) {
-        setCurrentPage(initialPage);
+        setHistory(['AccurateSelfAssessment']);
+      } else {
+        // setIsNewReport(false);
+        setResponses({
+          AccurateSelfAssessment: { value: lastReport.self_assess, comment: lastReport.comment_self_assess },
+          OtherCentred: { value: lastReport.other_centred, comment: lastReport.comment_other_centred },
+          Perspective: { value: lastReport.perspective, comment: lastReport.comment_perspective },
+          WillingnessToLearn: { value: lastReport.willing_learn, comment: lastReport.comment_willing_learn },
+        });
+        setCurrentPage(initialPage || 'AccurateSelfAssessment');
+        setHistory([initialPage || 'AccurateSelfAssessment']);
+        // setVisited({
+        //   AccurateSelfAssessment: true,
+        //   OtherCentred: true,
+        //   Perspective: true,
+        //   WillingnessToLearn: true,
+        // });
       }
-    }, [initialPage, reset])
+    }, [initialPage, reset, lastReport])
   );
 
   useEffect(() => {
-    setVisited(prev => ({ ...prev, [currentPage]: true }));
+    if (currentPage) {
+      setVisited(prev => ({ ...prev, [currentPage]: true }));
+      setHistory(prev => [...prev.filter(page => page !== currentPage), currentPage]);
+    }
   }, [currentPage]);
 
   const handleResponseChange = (key, field, value) => {
@@ -70,8 +97,8 @@ const SelfReflection = ({ route, navigation }) => {
   };
 
   const isLastPage = () => {
-    const remainingPages = pages.filter(page => !visited[page]);
-    return remainingPages.length === 0;
+    // console.log(visited)
+    return pages.every(page => visited[page]);
   };
 
   const renderPageContent = (page) => {
@@ -111,13 +138,55 @@ const SelfReflection = ({ route, navigation }) => {
 
   const handleNext = () => {
     if (isLastPage()) {
-      console.log(responses); // or perform save action here
+      if (isNewReport) {
+        console.log('next add')
+        addReport(responses);
+        setIsNewReport(false);
+      } else {
+        updateExistingReport(responses);
+        console.log('next update')
+      }
+      setHistory([]);
       navigation.navigate('Home');
     } else {
-      const nextPage = pages.find(page => !visited[page]);
+      const nextPage = pages.find((page) => !visited[page]);
       if (nextPage) {
         setCurrentPage(nextPage);
+      } else {
+        console.log('No next page found');
       }
+    }
+  };
+
+  const handleBack = () => {
+    if (history.length > 1) {
+      const prevPage = history[history.length - 2];
+      setHistory(prev => prev.slice(0, -1));
+      setCurrentPage(prevPage);
+    } else {
+      Alert.alert(
+        'Unsaved Changes',
+        'You have unsaved changes. Do you really want to leave without saving your report?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('User chose to stay'),
+          },
+          {
+            text: 'Leave',
+            onPress: () => {
+              console.log('User chose to leave');
+              if (isNewReport) {
+                setVisited(visitedBackup);
+              }
+              setIsNewReport(false);
+              setHistory([]);
+              navigation.navigate('Home');
+            }
+          }
+        ],
+        { cancelable: false }
+      );
     }
   };
 
@@ -128,11 +197,11 @@ const SelfReflection = ({ route, navigation }) => {
         <DefaultButton
           containerStyle={[HalfButtonStyles.container, { marginRight: 20 }]}
           text="Back"
-          onTouch={() => navigation.goBack()}
+          onTouch={handleBack}
         />
         <DefaultButton
           containerStyle={HalfButtonStyles.container}
-          text={isLastPage() ? "Save" : "Next"}
+          text={isLastPage() ? isNewReport ? 'Save' : 'Update' : 'Next'}
           onTouch={handleNext}
         />
       </View>

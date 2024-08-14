@@ -19,24 +19,21 @@ const BarChartComp = ({statValues, toggledViews}) => {
                 <Line x1="100" y1="1000" x2={graphWidth} y2="1000" stroke="black" strokeWidth="5" />
                 <SvgText
                     rotation="90"
-                    fontWeight="bold"
                     x="20"
-                    y="-25"
+                    y="-20"
                     textAnchor="start"
                     style={GraphStyles.svgText}>Excess
                 </SvgText>
                 <SvgText
                     rotation="90"
-                    fontWeight="bold"
                     x="480"
-                    y="-25"
+                    y="-20"
                     textAnchor="end"
                     style={GraphStyles.svgText}>Deficient
                 </SvgText>
                 <Line x1="50" y1="500" x2={graphWidth} y2="500" stroke="black" strokeWidth="5" strokeDasharray="20" />
                 <SvgText
                     rotation="0"
-                    fontWeight="bold"
                     x="50"
                     y="525"
                     textAnchor="start"
