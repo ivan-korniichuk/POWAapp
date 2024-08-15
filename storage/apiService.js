@@ -6,7 +6,7 @@ export const tryAuth = async (jwt) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': jwt,
+        'Authorization': 'Bearer ' + jwt,
       },
     });
 
@@ -34,9 +34,8 @@ export const handleLogin = async (email, password) => {
     });
 
     const data = await response.json();
-    const jwt = response.headers.get('Authorization');
 
-    return {...data, jwt};
+    return {...data, jwt: data.token};
   } catch (error) {
     console.error('Error logging in:', error);
     return {message: error}
@@ -73,7 +72,7 @@ export const addReportAPI = async (jwt, report) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': jwt,
+        'Authorization': 'Bearer ' + jwt,
       },
       body: JSON.stringify({
           ...report
@@ -97,7 +96,7 @@ export const getReportsAPI = async (jwt) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': jwt,
+        'Authorization': 'Bearer ' + jwt,
       },
     });
 
@@ -117,7 +116,7 @@ export const updateReportAPI = async (jwt, report) => {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': jwt,
+        'Authorization': 'Bearer ' + jwt,
       },
       body: JSON.stringify({
         ...report
