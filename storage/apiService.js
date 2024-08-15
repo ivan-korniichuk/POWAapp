@@ -16,7 +16,7 @@ export const tryAuth = async (jwt) => {
       return data._id;
     }
   } catch (error) {
-    console.error('Error fetching profile:', error);
+    console.error('Auth Error', error);
   }
 };
 
@@ -57,9 +57,8 @@ export const handleSignUp = async (username, email, password) => {
     });
 
     const data = await response.json();
-    const jwt = response.headers.get('Authorization');
 
-    return {...data, jwt};
+    return {...data, jwt: data.token};
   } catch (error) {
     console.error('Error signing in:', error);
     return {message: error}
