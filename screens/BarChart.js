@@ -3,13 +3,16 @@ import { View, ScrollView, Text, StyleSheet } from 'react-native';
 import { DefaultButton, TimeSelector, BarChartComp, ToogleButton, ColoredToggleButton } from '../components/index';
 import { ArrowLeft } from 'react-native-feather';
 import { BarChartStyles, ScrollViewStyles } from '../styles/index.style';
+import { getWeeklyAverages, getMonthlyAverages, getAllTimeAverages } from '../utils/barChartUtils';
+import { useData } from '../storage/storageService';
 
 const BarChart = ({navigation}) => {
+  const { reports } = useData();
   const [barValues, setBarValues] = useState([0,0,0,0]);
   const [features, setFeatures] = useState(["","",""]);
-
+  
   useEffect(() => {
-    onSelect("");
+    onSelect("Week");
   }, []);
 
   function updateBarValues (newValues) {
@@ -56,13 +59,34 @@ const BarChart = ({navigation}) => {
   }
 
   function onSelect(buttonName) {
-    // 
+    let thisValues = {
+      "other_centred": 0,
+      "perspective": 0,
+      "self_assess": 0,
+      "willing_learn": 0
+    };
+
+    // for further updates
+    // let previousValues;
+
+    switch(buttonName) {
+      case 'Week':
+        thisValues = {...getWeeklyAverages(reports).currentWeek};
+        break;
+      case 'Month':
+        thisValues = {...getMonthlyAverages(reports).currentMonth};
+        break;
+      case 'All Time':
+        thisValues = getAllTimeAverages(reports);
+        break;
+    }
+    
     updateBarValues([
-      Math.random() * 20 - 10,
-      Math.random() * 20 - 10,
-      Math.random() * 20 - 10,
-      Math.random() * 20 - 10])
-    // 
+      thisValues.perspective,
+      thisValues.other_centred,
+      thisValues.willing_learn,
+      thisValues.self_assess
+    ]);
     console.log(buttonName);
   }
   return (
