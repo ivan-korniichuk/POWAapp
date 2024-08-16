@@ -18,6 +18,8 @@ const questionRanges = [
 
 const OtherCentred = ({ response, handleResponseChange }) => {
   const [displayQuestion, setDisplayQuestion] = useState(getTextForValue(response.value, questionRanges));
+  const [answer, setAnswer] = useState('Unsure');
+  const [answerText, setAnswerText] = useState('It might help to take a bit more time to clarify your thoughts.');
 
   return (
     <ScrollView style={SelfReflectionStyles.container}>
@@ -38,22 +40,34 @@ const OtherCentred = ({ response, handleResponseChange }) => {
       </View>
       <View style={SelfReflectionStyles.buttonGroup}>
         <DefaultButton 
-          containerStyle={[HalfButtonStyles.container, {marginRight: 20}, SelfReflectionStyles.button, 2 === 1 && SelfReflectionStyles.selectedButton]} 
-          text="1" 
-          onTouch={() => handleResponseChange('number', 1)}
+          containerStyle={[HalfButtonStyles.container, {marginRight: 20}, SelfReflectionStyles.button, answer === 'Yes' && SelfReflectionStyles.selectedButton]} 
+          text="Yes" 
+          onTouch={() => {
+            handleResponseChange('number', 1);
+            setAnswer('Yes');
+            setAnswerText('This is a good indication that your reflection is accurate');
+          }}
         />
         <DefaultButton 
-          containerStyle={[HalfButtonStyles.container, {marginRight: 20}, SelfReflectionStyles.button, 2 === 2 && SelfReflectionStyles.selectedButton]} 
-          text="2" 
-          onTouch={() => handleResponseChange('number', 2)}
+          containerStyle={[HalfButtonStyles.container, {marginRight: 20}, SelfReflectionStyles.button, answer === 'Unsure' && SelfReflectionStyles.selectedButton]} 
+          text="Unsure" 
+          onTouch={() => {
+            handleResponseChange('number', 2);
+            setAnswer('Unsure');
+            setAnswerText('It might help to take a bit more time to clarify your thoughts.');
+          }}
         />
         <DefaultButton 
-          containerStyle={[HalfButtonStyles.container, SelfReflectionStyles.button, 2 === 3 && SelfReflectionStyles.selectedButton]} 
-          text="3" 
-          onTouch={() => handleResponseChange('number', 3)}
+          containerStyle={[HalfButtonStyles.container, SelfReflectionStyles.button, answer === 'No' && SelfReflectionStyles.selectedButton]} 
+          text="No" 
+          onTouch={() => {
+            handleResponseChange('number', 3);
+            setAnswer('No');
+            setAnswerText('This suggests your initial reflection may not be accurate.');
+          }}
         />
       </View>
-      <Text style={SelfReflectionStyles.indication}>This is a good indication that your reflection is accurate</Text>
+      <Text style={SelfReflectionStyles.indication}>{answerText}</Text>
       <TextInput
         style={SelfReflectionStyles.textInput}
         placeholder="Add your own short notes and reflections here"
