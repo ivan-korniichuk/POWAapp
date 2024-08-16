@@ -66,33 +66,27 @@ const BarChart = ({navigation}) => {
       "willing_learn": 0
     };
 
-    let previousValues;
+    // for further updates
+    // let previousValues;
 
     switch(buttonName) {
       case 'Week':
-        console.log(getWeeklyAverages(reports));
         thisValues = {...getWeeklyAverages(reports).currentWeek};
         break;
       case 'Month':
-        console.log(getMonthlyAverages(reports));
         thisValues = {...getMonthlyAverages(reports).currentMonth};
         break;
       case 'All Time':
-        console.log(getAllTimeAverages(reports)); 
         thisValues = getAllTimeAverages(reports);
         break;
     }
-    console.log('this')
-    console.log(thisValues);
     
-    // 
     updateBarValues([
       thisValues.perspective,
       thisValues.other_centred,
       thisValues.willing_learn,
       thisValues.self_assess
     ]);
-    // 
     console.log(buttonName);
   }
   return (
