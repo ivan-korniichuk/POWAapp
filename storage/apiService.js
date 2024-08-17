@@ -10,7 +10,7 @@ export const tryAuth = async (jwt) => {
       },
     });
 
-    if (!response.ok) {
+    if (response._bodyBlob.type != 'application/json') {
       const error = '[Error server is down]';
       console.error(error);
       return {message: error}
@@ -38,7 +38,7 @@ export const handleLogin = async (email, password) => {
         }),
     });
 
-    if (!response.ok) {
+    if (response._bodyBlob.type != 'application/json') {
       const error = '[Error server is down]';
       console.error(error);
       return {message: error}
@@ -66,7 +66,7 @@ export const handleSignUp = async (username, email, password) => {
       }),
     });
 
-    if (!response.ok) {
+    if (response._bodyBlob.type != 'application/json') {
       const error = '[Error server is down]';
       console.error(error);
       return {message: error}
@@ -93,7 +93,7 @@ export const addReportAPI = async (jwt, report) => {
       }),
     });
     
-    if (!response.ok) {
+    if (response._bodyBlob.type != 'application/json') {
       const error = '[Error server is down]';
       console.error(error);
       return {message: error}
@@ -119,7 +119,7 @@ export const getReportsAPI = async (jwt) => {
       },
     });
 
-    if (!response.ok) {
+    if (response._bodyBlob.type != 'application/json') {
       const error = '[Error server is down]';
       console.error(error);
       return {message: error}
@@ -147,7 +147,7 @@ export const updateReportAPI = async (jwt, report) => {
     }),
     });
 
-    if (!response.ok) {
+    if (response._bodyBlob.type != 'application/json') {
       const error = '[Error server is down]';
       console.error(error);
       return {message: error}
