@@ -7,7 +7,7 @@ const CustomSlider = ({useSlider = false, mainLabel, leftLabel, rightLabel, defV
     const [value, setValue] = useState(defValue);
 
     function changeValue(value) {
-        setValue(value.toFixed(1))
+        setValue(value)
     }
 
     useEffect(() => {
@@ -29,7 +29,7 @@ const CustomSlider = ({useSlider = false, mainLabel, leftLabel, rightLabel, defV
                     minimumValue={-10}
                     maximumValue={10}
                     value={value}
-                    onValueChange={(value) => {onValueChange && onValueChange(parseFloat(value.toFixed(1))); useSlider && changeValue(value);}}
+                    onValueChange={(value) => {onValueChange && onValueChange(parseFloat(value.toFixed(1))); useSlider && changeValue(parseFloat(value.toFixed(1)));}}
                     minimumTrackTintColor="#888AC0"
                     maximumTrackTintColor="#888AC0"
                     thumbTintColor = "#02077E"
