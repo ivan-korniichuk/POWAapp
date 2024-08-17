@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { userSchema, reportSchema } from './schemas';
-import { USER_KEY, REPORTS_KEY } from '../config';
+import { USER_KEY, REPORTS_KEY } from '@env';
 
 const DataContext = createContext();
 
