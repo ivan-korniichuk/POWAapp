@@ -11,7 +11,7 @@ const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 const graphWidth = (screenWidth / (screenHeight/2200));
 
-const BarChartComp = ({statValues, toggledViews, leftLabel, rightLabel}) => {
+const ProgressGraphComp = ({statValues, toggledViews, leftLabel, rightLabel}) => {
     return (
         <View style={GraphStyles.progressGraph}>
             <Svg height="100%" width="100%" viewBox={`0 0 ${graphWidth} 1100`}>
