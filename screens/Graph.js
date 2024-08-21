@@ -1,8 +1,10 @@
-import { React, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { DefaultButton, TimeSelector, ColoredToggleButton, ProgressGraphComp } from '../components/index';
 import { GraphStyles, ScrollViewStyles } from '../styles/index.style';
 import { ArrowLeft } from 'react-native-feather';
+import { useData } from '../storage/storageService';
+import { getAllTimeStats, getLastMonthStats, getLastWeekStats } from '../utils/graphUtils';
 
 function generateRandomStatValuesList(count) {
 
@@ -16,7 +18,8 @@ function generateRandomStatValuesList(count) {
 }
 
 const Graph = ({navigation}) => {
-  
+  const { reports } = useData();
+
   const [statValues, setStatValues] = useState([
     generateRandomStatValuesList(7),
     generateRandomStatValuesList(7),
@@ -25,9 +28,39 @@ const Graph = ({navigation}) => {
     generateRandomStatValuesList(7),
   ]);
   const [toggledViews, setToggledViews] = useState([true, false, false, false, false]);
+  const [timeframe, setTimeframe] = useState("Week");
+
+  useEffect(() => {
+    // statValues
+    stats_avg = []
+    stats_perspective = []
+    stats_other_centred = []
+    stats_willing_learn = []
+    stats_self_assess = []
+    recent_stats = []
+    switch (timeframe) {
+      case "Week":
+        recent_stats = getLastWeekStats(reports);
+        break;
+      case "Month":
+        recent_stats = getLastMonthStats(reports);
+        break;
+      case "All Time":
+        recent_stats = getAllTimeStats(reports);
+        break;
+    }
+    recent_stats.forEach(stat => {
+      stats_avg.push(stat.average);
+      stats_perspective.push(stat.perspective);
+      stats_other_centred.push(stat.other_centred);
+      stats_willing_learn.push(stat.willing_learn);
+      stats_self_assess.push(stat.self_assess);
+    });
+    setStatValues([stats_avg, stats_perspective, stats_other_centred, stats_willing_learn, stats_self_assess]);
+  }, [timeframe]);
 
   function onSelect(buttonName) {
-    console.log(buttonName);
+    setTimeframe(buttonName);
   }
 
   function toggleToggledView(index) {
@@ -43,7 +76,7 @@ const Graph = ({navigation}) => {
 
       <ScrollView contentContainerStyle={ScrollViewStyles.scrollViewContent} style={ScrollViewStyles.scrollView}>
 
-      <ProgressGraphComp statValues={statValues} toggledViews={toggledViews} />
+      <ProgressGraphComp statValues={statValues} toggledViews={toggledViews} leftLabel={{"Week": "1 week ago", "Month": "1 month ago", "All Time": (new Date(Date.now()-(statValues[0].length*86400000))).toDateString()}[timeframe]} rightLabel={"Today"} />
 
       <Text style={GraphStyles.mainText}>Plot:</Text>
 

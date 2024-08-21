@@ -11,7 +11,7 @@ const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 const graphWidth = (screenWidth / (screenHeight/2200));
 
-const BarChartComp = ({statValues, toggledViews}) => {
+const ProgressGraphComp = ({statValues, toggledViews, leftLabel, rightLabel}) => {
     return (
         <View style={GraphStyles.progressGraph}>
             <Svg height="100%" width="100%" viewBox={`0 0 ${graphWidth} 1100`}>
@@ -37,7 +37,7 @@ const BarChartComp = ({statValues, toggledViews}) => {
                     x="50"
                     y="525"
                     textAnchor="start"
-                    style={GraphStyles.svgText}>Monday
+                    style={GraphStyles.svgText}>{leftLabel}
                 </SvgText>
                 <SvgText
                     rotation="0"
@@ -45,7 +45,7 @@ const BarChartComp = ({statValues, toggledViews}) => {
                     x={graphWidth/2}
                     y="525"
                     textAnchor="end"
-                    style={GraphStyles.svgText}>Sunday
+                    style={GraphStyles.svgText}>{rightLabel}
                 </SvgText>
                 {toggledViews[0] && <Polyline
                     points={statValuesToPolylinePoints(statValues[0])}
@@ -84,8 +84,6 @@ const BarChartComp = ({statValues, toggledViews}) => {
 
 function statValuesToPolylinePoints(statValues) {
 
-    console.log(statValues);
-
     let strRes = "";
     let valueCount = statValues.length;
     let firstX = 100;
@@ -98,9 +96,8 @@ function statValuesToPolylinePoints(statValues) {
         firstX += incrementX;
     };
 
-    console.log(strRes);
     return strRes;
 
 }
 
-export default BarChartComp;
+export default ProgressGraphComp;
