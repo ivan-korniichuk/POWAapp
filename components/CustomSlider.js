@@ -4,14 +4,14 @@ import React, { useState, useEffect } from 'react';
 import CustomSliderStyle from "../styles/CustomSlider.style"
 
 const CustomSlider = ({useSlider = false, mainLabel, leftLabel, rightLabel, defValue = 0, onValueChange, onTouch}) => {
-    const [value, setValue] = useState(defValue);
+    const [sliderValue, setSliderValue] = useState(defValue);
 
     function changeValue(value) {
-        setValue(value)
+        setSliderValue(isNaN(parseFloat(value.toFixed(1))) ? 0 : parseFloat(value.toFixed(1)));
     }
 
     useEffect(() => {
-        setValue(defValue);
+        changeValue(defValue);
     }, [defValue])
 
     return (
@@ -20,7 +20,7 @@ const CustomSlider = ({useSlider = false, mainLabel, leftLabel, rightLabel, defV
 
             <View style={CustomSliderStyle.sliderLabels}>
                 <Text style={[CustomSliderStyle.text, {textAlign: "left"}]}>{leftLabel}</Text>
-                <Text style = {[CustomSliderStyle.grey, CustomSliderStyle.text, {textAlign: "center"}]}>{value}-Score:</Text>
+                <Text style = {[CustomSliderStyle.grey, CustomSliderStyle.text, {textAlign: "center"}]}>{sliderValue}-Score:</Text>
                 <Text style={[CustomSliderStyle.text, {textAlign: "right"}]}>{rightLabel}</Text>
             </View>
 
@@ -28,8 +28,12 @@ const CustomSlider = ({useSlider = false, mainLabel, leftLabel, rightLabel, defV
                     style={CustomSliderStyle.slider}
                     minimumValue={-10}
                     maximumValue={10}
-                    value={value}
-                    onValueChange={(value) => {onValueChange && onValueChange(parseFloat(value.toFixed(1))); useSlider && changeValue(parseFloat(value.toFixed(1)));}}
+                    value={sliderValue}
+                    onValueChange={(value) => {
+                        const fixedValue = isNaN(parseFloat(value.toFixed(1))) ? 0 : parseFloat(value.toFixed(1));
+                        onValueChange && onValueChange(fixedValue);
+                        useSlider && setSliderValue(fixedValue);
+                    }}
                     minimumTrackTintColor="#888AC0"
                     maximumTrackTintColor="#888AC0"
                     thumbTintColor = "#02077E"

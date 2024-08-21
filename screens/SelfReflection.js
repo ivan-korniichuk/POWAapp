@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Alert } from 'react-native';
+import { View, Alert, Platform } from 'react-native';
 import { AccurateSelfAssessment, OtherCentred, Perspective, WillingnessToLearn } from '../contents/index';
 import { SelfReflectionStyles, HalfButtonStyles, Default } from '../styles/index.style';
 import { DefaultButton } from '../components/index';
@@ -164,31 +164,39 @@ const SelfReflection = ({ route, navigation }) => {
       setHistory(prev => prev.slice(0, -1));
       setCurrentPage(prevPage);
     } else {
-      Alert.alert(
-        'Unsaved Changes',
-        'You have unsaved changes. Do you really want to leave without saving your report?',
-        [
-          {
-            text: 'Cancel',
-            onPress: () => console.log('User chose to stay'),
-          },
-          {
-            text: 'Leave',
-            onPress: () => {
-              console.log('User chose to leave');
-              if (isNewReport) {
-                setVisited(visitedBackup);
-              }
-              setIsNewReport(false);
-              setHistory([]);
-              navigation.navigate('Home');
+      const leaveAction = () => {
+        console.log('User chose to leave');
+        if (isNewReport) {
+          setVisited(visitedBackup);
+        }
+        setIsNewReport(false);
+        setHistory([]);
+        navigation.navigate('Home');
+      };
+  
+      if (Platform.OS === 'web') {
+        if (window.confirm('You have unsaved changes. Do you really want to leave without saving your report?')) {
+          leaveAction();
+        }
+      } else {
+        Alert.alert(
+          'Unsaved Changes',
+          'You have unsaved changes. Do you really want to leave without saving your report?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('User chose to stay'),
+            },
+            {
+              text: 'Leave',
+              onPress: leaveAction,
             }
-          }
-        ],
-        { cancelable: false }
-      );
+          ],
+          { cancelable: false }
+        );
+      }
     }
-  };
+  };  
 
   return (
     <View style={Default.container}>
