@@ -100,4 +100,4 @@ function statValuesToPolylinePoints(statValues) {
 
 }
 
-export default BarChartComp;
+export default ProgressGraphComp;
