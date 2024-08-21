@@ -79,7 +79,6 @@ export const DataSyncManager = () => {
   }
 
   const updateExistingReport = async (updatedData) => {
-    console.log(lastReport)
     if (lastReport.dateCreatedCli === '') {
       console.error('Cannot update not existing report!');
       return;
