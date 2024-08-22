@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
     marginVertical: 10,
     color : "white",
-    fontSize : 15,
+    fontSize : 18,
     paddingVertical : 10,
     backgroundColor : "#02077E"
   },
