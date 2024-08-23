@@ -48,6 +48,7 @@ export const DataSyncManager = () => {
   }
 
   const addReport = async (report) => {
+    console.log(report)
     const newReport = {
       ...reportSchema,
       _id: -1,
@@ -59,6 +60,10 @@ export const DataSyncManager = () => {
       comment_other_centred: report.OtherCentred.comment,
       comment_willing_learn: report.WillingnessToLearn.comment,
       comment_self_assess: report.AccurateSelfAssessment.comment,
+      answer_perspective: report.Perspective.answer,
+      answer_other_centred: report.OtherCentred.answer,
+      answer_willing_learn: report.WillingnessToLearn.answer,
+      answer_self_assess: report.AccurateSelfAssessment.answer,
       dateCreatedCli: new Date().toISOString(),
     };
 
@@ -94,7 +99,12 @@ export const DataSyncManager = () => {
       comment_other_centred: updatedData.OtherCentred.comment,
       comment_willing_learn: updatedData.WillingnessToLearn.comment,
       comment_self_assess: updatedData.AccurateSelfAssessment.comment,
+      answer_perspective: updatedData.Perspective.answer,
+      answer_other_centred: updatedData.OtherCentred.answer,
+      answer_willing_learn: updatedData.WillingnessToLearn.answer,
+      answer_self_assess: updatedData.AccurateSelfAssessment.answer,
     };
+    console.log(updatedReport)
 
     await updateLocalReport(updatedReport);
     if (updatedReport._id != '-1') {

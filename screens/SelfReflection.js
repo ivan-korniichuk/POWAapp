@@ -14,25 +14,27 @@ const pages = [
   'WillingnessToLearn'
 ];
 
+const initialVisitedState = {
+  AccurateSelfAssessment: false,
+  OtherCentred: false,
+  Perspective: false,
+  WillingnessToLearn: false,
+};
+
+const initialResponsesState = {
+  AccurateSelfAssessment: { value: 0, comment: '', answer: '' },
+  OtherCentred: { value: 0, comment: '', answer: '' },
+  Perspective: { value: 0, comment: '', answer: '' },
+  WillingnessToLearn: { value: 0, comment: '', answer: '' },
+};
+
 const SelfReflection = ({ route, navigation }) => {
   const { lastReport } = useData();
   const { addReport, updateExistingReport } = DataSyncManager();
   const { initialPage, reset } = route.params || {};
 
   const [isNewReport, setIsNewReport] = useState(true);
-  const [responses, setResponses] = useState({
-    AccurateSelfAssessment: { value: 0, comment: '' },
-    OtherCentred: { value: 0, comment: '' },
-    Perspective: { value: 0, comment: '' },
-    WillingnessToLearn: { value: 0, comment: '' },
-  });
-
-  const initialVisitedState = {
-    AccurateSelfAssessment: false,
-    OtherCentred: false,
-    Perspective: false,
-    WillingnessToLearn: false,
-  };
+  const [responses, setResponses] = useState(initialResponsesState);
 
   const [visited, setVisited] = useState(initialVisitedState);
   const [visitedBackup, setVisitedBackup] = useState(initialVisitedState);
@@ -45,12 +47,7 @@ const SelfReflection = ({ route, navigation }) => {
       if (reset) {
         setIsNewReport(true);
         setVisitedBackup(visited);
-        setResponses({
-          AccurateSelfAssessment: { value: 0, comment: '' },
-          OtherCentred: { value: 0, comment: '' },
-          Perspective: { value: 0, comment: '' },
-          WillingnessToLearn: { value: 0, comment: '' },
-        });
+        setResponses(initialResponsesState);
         setVisited({
           AccurateSelfAssessment: true, // Set first page to visited
           OtherCentred: false,
@@ -60,12 +57,27 @@ const SelfReflection = ({ route, navigation }) => {
         setCurrentPage('AccurateSelfAssessment');
         setHistory(['AccurateSelfAssessment']);
       } else {
-        // setIsNewReport(false);
         setResponses({
-          AccurateSelfAssessment: { value: lastReport.self_assess, comment: lastReport.comment_self_assess },
-          OtherCentred: { value: lastReport.other_centred, comment: lastReport.comment_other_centred },
-          Perspective: { value: lastReport.perspective, comment: lastReport.comment_perspective },
-          WillingnessToLearn: { value: lastReport.willing_learn, comment: lastReport.comment_willing_learn },
+          AccurateSelfAssessment: { 
+            value: lastReport.self_assess,
+            comment: lastReport.comment_self_assess,
+            answer: lastReport.answer_self_assess,
+          },
+          OtherCentred: { 
+            value: lastReport.other_centred,
+            comment: lastReport.comment_other_centred,
+            answer: lastReport.answer_other_centred,
+          },
+          Perspective: { 
+            value: lastReport.perspective,
+            comment: lastReport.comment_perspective,
+            answer: lastReport.answer_perspective,
+          },
+          WillingnessToLearn: { 
+            value: lastReport.willing_learn,
+            comment: lastReport.comment_willing_learn,
+            answer: lastReport.answer_willing_learn,
+          },
         });
         setCurrentPage(initialPage || 'AccurateSelfAssessment');
         setHistory([initialPage || 'AccurateSelfAssessment']);
@@ -75,10 +87,6 @@ const SelfReflection = ({ route, navigation }) => {
 
   useEffect(() => {
     if (currentPage && !visited[currentPage]) {
-      console.log("useEffect")
-      console.log(visited[currentPage])
-      console.log(visited)
-      console.log(currentPage)
       setVisited(prev => ({ ...prev, [currentPage]: true }));
       setHistory(prev => [...prev.filter(page => page !== currentPage), currentPage]);
     }

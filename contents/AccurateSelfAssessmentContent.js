@@ -21,6 +21,11 @@ const AccurateSelfAssessment = ({ response, handleResponseChange }) => {
   const [answer, setAnswer] = useState('Unsure');
   const [answerText, setAnswerText] = useState('It might help to take a bit more time to clarify your thoughts.');
 
+  function changeAnswer(newAnswer) {
+    setAnswer(newAnswer);
+    handleResponseChange('answer', newAnswer);
+  }
+
   return (
     <ScrollView style={SelfReflectionStyles.container}>
       <CustomSlider 
@@ -43,8 +48,7 @@ const AccurateSelfAssessment = ({ response, handleResponseChange }) => {
           containerStyle={[HalfButtonStyles.container, {marginRight: 20}, SelfReflectionStyles.button, answer === 'Yes' && SelfReflectionStyles.selectedButton]} 
           text="Yes" 
           onTouch={() => {
-            handleResponseChange('number', 1);
-            setAnswer('Yes');
+            changeAnswer('Yes');
             setAnswerText('This is a good indication that your reflection is accurate');
           }}
         />
@@ -52,8 +56,7 @@ const AccurateSelfAssessment = ({ response, handleResponseChange }) => {
           containerStyle={[HalfButtonStyles.container, {marginRight: 20}, SelfReflectionStyles.button, answer === 'Unsure' && SelfReflectionStyles.selectedButton]} 
           text="Unsure" 
           onTouch={() => {
-            handleResponseChange('number', 2);
-            setAnswer('Unsure');
+            changeAnswer('Unsure');
             setAnswerText('It might help to take a bit more time to clarify your thoughts.');
           }}
         />
@@ -61,8 +64,7 @@ const AccurateSelfAssessment = ({ response, handleResponseChange }) => {
           containerStyle={[HalfButtonStyles.container, SelfReflectionStyles.button, answer === 'No' && SelfReflectionStyles.selectedButton]} 
           text="No" 
           onTouch={() => {
-            handleResponseChange('number', 3);
-            setAnswer('No');
+            changeAnswer('No');
             setAnswerText('This suggests your initial reflection may not be accurate.');
           }}
         />
