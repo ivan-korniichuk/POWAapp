@@ -142,23 +142,40 @@ const SelfReflection = ({ route, navigation }) => {
   };
 
   const handleNext = () => {
-    if (isLastPage()) {
-      if (isNewReport) {
-        console.log('next add')
-        addReport(responses);
-        setIsNewReport(false);
+    if (responses[currentPage].answer === '') {
+      if (Platform.OS === 'web') {
+        alert('Please provide an answer to the question above before continuing.');
       } else {
-        updateExistingReport(responses);
-        console.log('next update')
+        Alert.alert(
+          'Question not answered',
+          'Please provide an answer to the question above before continuing.',
+          [
+            {
+              text: 'Close',
+            },
+          ],
+          { cancelable: false }
+        );
       }
-      setHistory([]);
-      navigation.navigate('Home');
     } else {
-      const nextPage = pages.find((page) => !visited[page]);
-      if (nextPage) {
-        setCurrentPage(nextPage);
+      if (isLastPage()) {
+        if (isNewReport) {
+          console.log('next add')
+          addReport(responses);
+          setIsNewReport(false);
+        } else {
+          updateExistingReport(responses);
+          console.log('next update')
+        }
+        setHistory([]);
+        navigation.navigate('Home');
       } else {
-        console.log('No next page found');
+        const nextPage = pages.find((page) => !visited[page]);
+        if (nextPage) {
+          setCurrentPage(nextPage);
+        } else {
+          console.log('No next page found');
+        }
       }
     }
   };

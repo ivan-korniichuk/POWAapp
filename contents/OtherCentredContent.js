@@ -18,8 +18,8 @@ const questionRanges = [
 
 const OtherCentred = ({ response, handleResponseChange }) => {
   const [displayQuestion, setDisplayQuestion] = useState(getTextForValue(response.value, questionRanges));
-  const [answer, setAnswer] = useState('Unsure');
-  const [answerText, setAnswerText] = useState('It might help to take a bit more time to clarify your thoughts.');
+  const [answer, setAnswer] = useState('');
+  const [answerText, setAnswerText] = useState('We need your response to the question above.');
 
   function changeAnswer(newAnswer) {
     setAnswer(newAnswer);
