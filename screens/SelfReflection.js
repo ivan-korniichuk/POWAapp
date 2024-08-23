@@ -69,18 +69,16 @@ const SelfReflection = ({ route, navigation }) => {
         });
         setCurrentPage(initialPage || 'AccurateSelfAssessment');
         setHistory([initialPage || 'AccurateSelfAssessment']);
-        // setVisited({
-        //   AccurateSelfAssessment: true,
-        //   OtherCentred: true,
-        //   Perspective: true,
-        //   WillingnessToLearn: true,
-        // });
       }
     }, [initialPage, reset, lastReport])
   );
 
   useEffect(() => {
-    if (currentPage) {
+    if (currentPage && !visited[currentPage]) {
+      console.log("useEffect")
+      console.log(visited[currentPage])
+      console.log(visited)
+      console.log(currentPage)
       setVisited(prev => ({ ...prev, [currentPage]: true }));
       setHistory(prev => [...prev.filter(page => page !== currentPage), currentPage]);
     }
@@ -97,7 +95,6 @@ const SelfReflection = ({ route, navigation }) => {
   };
 
   const isLastPage = () => {
-    // console.log(visited)
     return pages.every(page => visited[page]);
   };
 
@@ -162,6 +159,9 @@ const SelfReflection = ({ route, navigation }) => {
     if (history.length > 1) {
       const prevPage = history[history.length - 2];
       setHistory(prev => prev.slice(0, -1));
+      const updatedVisited = { ...visited };
+      updatedVisited[currentPage] = false;
+      setVisited(updatedVisited);
       setCurrentPage(prevPage);
     } else {
       const leaveAction = () => {
