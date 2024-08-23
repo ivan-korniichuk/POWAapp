@@ -10,10 +10,6 @@ export const DataProvider = ({ children }) => {
   const [reports, setReports] = useState([]);
   const [lastReport, setLastReport] = useState(reportSchema);
 
-  // useEffect(() => {
-  //   loadUserData();
-  // }, []);
-
   const saveUserData = async (userData) => {
     try {
       const jsonValue = JSON.stringify(userData);
