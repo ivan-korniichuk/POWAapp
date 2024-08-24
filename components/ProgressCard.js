@@ -19,10 +19,10 @@ const ProgressCard = ({ title, leftLabel, rightLabel, value, onPress }) => {
             disabled = {true}
             value={value}
         />
-        <View style={CustomSliderStyle.sliderLabels}>
-          <Text style={[CustomSliderStyle.grey,CustomSliderStyle.text, {textAlign: "left"}]}>{leftLabel}</Text>
+        <View style={styles.labelsContainer}>
+          <Text style={[CustomSliderStyle.grey, CustomSliderStyle.text, {textAlign: "left"}]}>{leftLabel}</Text>
           <Text style = {[CustomSliderStyle.grey, CustomSliderStyle.text, {textAlign: "center"}]}>{value}-Score:</Text>
-          <Text style={[CustomSliderStyle.grey,CustomSliderStyle.text, {textAlign: "right"}]}>{rightLabel}</Text>
+          <Text style={[CustomSliderStyle.grey, CustomSliderStyle.text, {textAlign: "right"}]}>{rightLabel}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -34,40 +34,40 @@ export default ProgressCard;
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#f5f5f5',
-    padding: 8, // Reduced padding
-    marginVertical: 5, // Reduced vertical margin
-    borderRadius: 8, // Reduced border radius
-    elevation: 2, // Reduced shadow
-    shadowColor: '#000', // For iOS shadow
+    padding: 8,
+    marginVertical: 5,
+    borderRadius: 8,
+    elevation: 2,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
   },
   title: {
-    fontSize: 14, // Reduced font size
+    fontSize: 14,
     fontWeight: 'bold',
-    marginBottom: 6, // Reduced bottom margin
+    marginBottom: 6,
     textAlign: 'center'
   },
   sliderContainer: {
     alignItems: 'center',
   },
   slider: {
-    width: '90%', // Adjusted width
-    height: 20, // Reduced height
+    width: '90%',
+    height: 20,
   },
   labelsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '90%', // Adjusted width
-    marginTop: 4, // Reduced top margin
+    width: '100%',
+    marginTop: 4,
   },
   label: {
-    fontSize: 10, // Reduced font size
+    fontSize: 10,
     color: '#777',
   },
   value: {
-    fontSize: 12, // Slightly larger font size for value
+    fontSize: 12,
     fontWeight: 'bold',
     color: '#000',
   },

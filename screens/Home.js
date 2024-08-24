@@ -90,6 +90,9 @@ const Home = ({ navigation }) => {
               shouldPlay={false}
               style={styles.video}
               onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
+              onReadyForDisplay={videoData => {
+                videoData.srcElement.style.position = "initial"
+              }}
             />
           </View>
         ) : (
@@ -204,6 +207,7 @@ const styles = StyleSheet.create({
   },
   video: {
     width: '100%',
+    height: 'auto',
     aspectRatio: 16 / 9,
     backgroundColor: 'black',
     marginBottom: 10,
