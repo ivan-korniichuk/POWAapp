@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, Image, ScrollView, StyleSheet, Button } from 'react-native';
+import { View, Text, Image, ScrollView, StyleSheet, Platform } from 'react-native';
 import { DefaultButton, ProgressCard } from '../components/index';
 import { useData } from '../storage/storageService';
 import { Audio, Video, ResizeMode, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
@@ -91,7 +91,9 @@ const Home = ({ navigation }) => {
               style={styles.video}
               onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
               onReadyForDisplay={videoData => {
-                videoData.srcElement.style.position = "initial"
+                if (Platform.OS === 'web') {
+                  videoData.srcElement.style.position = "initial";
+                }
               }}
             />
           </View>
