@@ -58,11 +58,11 @@ export const DataProvider = ({ children }) => {
     await saveUserData(userData);
   };
 
-  const loadUserData = async () => {
-    const loadedUser = await loadUser();
-    const loadedReports = await loadReports();
-    return {loadedUser, loadedReports};
-  };
+  // const loadUserData = async () => {
+  //   const loadedUser = await loadUser();
+  //   const loadedReports = await loadReports();
+  //   return {loadedUser, loadedReports};
+  // };
 
   const loadUser = async () => {
     try {

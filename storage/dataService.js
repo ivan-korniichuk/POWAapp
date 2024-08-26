@@ -19,6 +19,7 @@ export const DataSyncManager = () => {
     addLocalReport, 
     setAllReports,
     updateLocalReport,
+    updateJWT,
   } = useData();
 
   const auth = async () => {
@@ -26,20 +27,18 @@ export const DataSyncManager = () => {
     if (loadedUser) {
       const responce = await tryAuth(loadedUser.jwt);
       if (responce && !responce.message) {
-        setIsOnline(true);
         const _id = responce._id;
         if (_id) {
-          await loadServerReports(loadedUser.jwt);
+          // await loadServerReports(loadedUser.jwt);
+          syncReports(loadedUser.jwt);
           setIsAuthenticated(true);
+          setIsOnline(true);
           return true;
         }
       } else if (loadedUser.jwt) {
         setIsOnline(false);
         setIsAuthenticated(true);
         return true;
-      } else {
-        setIsOnline(false);
-        setIsAuthenticated(false);
       }
     }
     setIsOnline(false);
@@ -48,13 +47,7 @@ export const DataSyncManager = () => {
   };
 
   useEffect(() => {
-    if (hasMountedOnline.current) {
-      if (isAuthenticated && user.jwt !== '' && isOnline) {
-        syncReports();
-      }
-    } else {
-      hasMountedOnline.current = true;
-    }
+    onOnline();
   }, [isOnline]);
 
   useEffect(() => {
@@ -67,6 +60,25 @@ export const DataSyncManager = () => {
       hasMountedAuth.current = true;
     }
   }, [isAuthenticated]);
+
+  async function onOnline() {
+    if (hasMountedOnline.current) {
+      if (isOnline) {
+        const responce = await tryAuth(user.jwt);
+        console.log('on online')
+        console.log(responce)
+        if (responce && responce.message) {
+          await logout();
+          return;
+        }
+        if (isAuthenticated && user.jwt !== '') {
+          syncReports();
+        }
+      }
+    } else {
+      hasMountedOnline.current = true;
+    }
+  }
  
   const login = async (email, password) => {
     const responce = await handleLogin(email, password);
@@ -76,9 +88,10 @@ export const DataSyncManager = () => {
         await updateJWT(responce.jwt);
         await syncReports(responce.jwt);
       } else {
-        const reports = await getReportsAPI(responce.jwt);
+        // const reports = await getReportsAPI(responce.jwt);
         await setNewUser(responce.username, responce.email, responce.jwt);
-        await setAllReports(reports);
+        // await setAllReports(reports);
+        await syncReports(responce.jwt);
       }
       setIsAuthenticated(true);
       setIsOnline(true);
@@ -86,11 +99,13 @@ export const DataSyncManager = () => {
     }
     setIsOnline(false);
     setIsAuthenticated(false);
-    return typeof Object.hasOwn(responce.message, 'name') && responce.message.name === "TypeError" ? "Unable to connect to the server, please try again later." : responce.message;
+    return typeof Object.hasOwn(responce.message, 'name') && responce.message.name === 'TypeError' ? 'Unable to connect to the server, please try again later.' : responce.message;
   };
 
   const logout = async () => {
     console.error('requires logout');
+    await updateJWT('');
+    setIsAuthenticated(false);
   };
   
   const signUp = async (username, email, password) => {
@@ -99,11 +114,11 @@ export const DataSyncManager = () => {
       await setNewUser(responce.username, responce.email, responce.jwt);
       setIsOnline(true);
       setIsAuthenticated(true);
-      return "";
+      return '';
     }
     setIsOnline(false);
     setIsAuthenticated(false);
-    return typeof Object.hasOwn(responce.message, 'name') && responce.message.name === "TypeError" ? "Unable to connect to the server, please try again later." : responce.message;
+    return typeof Object.hasOwn(responce.message, 'name') && responce.message.name === 'TypeError' ? 'Unable to connect to the server, please try again later.' : responce.message;
   };
 
   const addReport = async (report) => {
@@ -126,13 +141,13 @@ export const DataSyncManager = () => {
     };
 
     const responce = await addReportAPI(user.jwt, newReport);
-    console.log(responce && !responce.message)
-    if (responce && !responce.message) {
+    const _id = responce ? responce._id : undefined;
+    console.log('responce add' + responce)
+    if (responce) {
       setIsOnline(true);
     } else {
       setIsOnline(false);
     }
-    const _id = responce._id;
     const updatedReport = _id ? {
       ...newReport,
       _id: _id
@@ -149,6 +164,7 @@ export const DataSyncManager = () => {
       setIsOnline(true);
       await setAllReports(responce);
     } else if (responce.message) {
+      setIsOnline(true);
       setIsAuthenticated(false);
     } else {
       setIsOnline(false);
@@ -201,7 +217,7 @@ export const DataSyncManager = () => {
         const localReport = localReports[i];
         if (localReport._id === -1) {
           const responce = await addReportAPI(user.jwt, localReport);
-          const _id = responce._id;
+          const _id = responce ? responce._id : undefined;
           if (_id) {
             localReports[i]._id = _id;
           } else {
