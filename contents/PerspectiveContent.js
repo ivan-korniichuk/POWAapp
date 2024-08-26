@@ -9,7 +9,7 @@ const questionRanges = [
   { min: -7.9, max: -6, text: 'Did you miss seeing things from another person’s perspective?' },
   { min: -5.9, max: -3.5, text: 'Are you sure you’re out of balance? Sometimes a narrowed perspective is appropriate. Blinkered is about missing things not about a conscious decision to bring helpful focus to a situation.' },
   { min: -3.4, max: -1, text: 'Did you consider a broad range of factors that could be influencing the situation/person?' },
-  { min: -0.9, max: 1, text: 'Are you sure you’re balanced? Perspective isn’t just about getting things rightn it is about ensuring you haven’t missed.'},
+  { min: -0.9, max: 1, text: 'Are you sure you’re balanced? Perspective isn’t just about getting things right it is about ensuring you haven’t missed.'},
   { min: 1.1, max: 3.5, text: 'Were your behaviours/actions appropriate when adopting a wide angled lens?' },
   { min: 3.6, max: 6, text: 'Are you sure you’re out of balance? Keeping an open mind and collecting information from multiple sources can be appropriate in certain contexts.' },
   { min: 6.1, max: 8, text: 'Did you feel uncomfortable, unable to see the wood from the trees?' },
