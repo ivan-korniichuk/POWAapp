@@ -1,9 +1,16 @@
 import { tryAuth, handleLogin, handleSignUp, addReportAPI, getReportsAPI, updateReportAPI } from './apiService';
 import { useData } from './storageService';
 import { reportSchema } from './schemas';
+import { useEffect, useRef } from 'react';
 
 export const DataSyncManager = () => {
+  const hasMountedOnline = useRef(false);
+  const hasMountedAuth = useRef(false);
   const { 
+    isAuthenticated,
+    setIsAuthenticated,
+    isOnline,
+    setIsOnline,
     user,
     reports, 
     lastReport, 
@@ -17,38 +24,89 @@ export const DataSyncManager = () => {
   const auth = async () => {
     const loadedUser = await loadUser();
     if (loadedUser) {
-      const _id = await tryAuth(loadedUser.jwt);
-      if (_id) {
-        await loadServerReports(loadedUser.jwt);
+      const responce = await tryAuth(loadedUser.jwt);
+      if (responce && !responce.message) {
+        setIsOnline(true);
+        const _id = responce._id;
+        if (_id) {
+          await loadServerReports(loadedUser.jwt);
+          setIsAuthenticated(true);
+          return true;
+        }
+      } else if (loadedUser.jwt) {
+        setIsOnline(false);
+        setIsAuthenticated(true);
         return true;
+      } else {
+        setIsOnline(false);
+        setIsAuthenticated(false);
       }
     }
-  
+    setIsOnline(false);
+    setIsAuthenticated(false);
     return false;
-  }
+  };
+
+  useEffect(() => {
+    if (hasMountedOnline.current) {
+      if (isAuthenticated && user.jwt !== '' && isOnline) {
+        syncReports();
+      }
+    } else {
+      hasMountedOnline.current = true;
+    }
+  }, [isOnline]);
+
+  useEffect(() => {
+    if (hasMountedAuth.current) {
+      console.log('isAuthenticated: ' + isAuthenticated);
+      if (!isAuthenticated) {
+        logout();
+      }
+    } else {
+      hasMountedAuth.current = true;
+    }
+  }, [isAuthenticated]);
  
   const login = async (email, password) => {
     const responce = await handleLogin(email, password);
-    if (!Object.hasOwn(responce, 'message')) {
-      const reports = await getReportsAPI(responce.jwt)
-      await setNewUser(responce.username, responce.email, responce.jwt);
-      await setAllReports(reports);
+    const loadedUser = await loadUser();
+    if (responce && !responce.message) {
+      if (loadedUser && loadedUser.email === responce.email) {
+        await updateJWT(responce.jwt);
+        await syncReports(responce.jwt);
+      } else {
+        const reports = await getReportsAPI(responce.jwt);
+        await setNewUser(responce.username, responce.email, responce.jwt);
+        await setAllReports(reports);
+      }
+      setIsAuthenticated(true);
+      setIsOnline(true);
       return "";
     }
+    setIsOnline(false);
+    setIsAuthenticated(false);
     return typeof Object.hasOwn(responce.message, 'name') && responce.message.name === "TypeError" ? "Unable to connect to the server, please try again later." : responce.message;
-  }
+  };
+
+  const logout = async () => {
+    console.error('requires logout');
+  };
   
   const signUp = async (username, email, password) => {
     const responce = await handleSignUp(username, email, password);
-    if (!Object.hasOwn(responce, 'message')) {
+    if (responce && !responce.message) {
       await setNewUser(responce.username, responce.email, responce.jwt);
+      setIsOnline(true);
+      setIsAuthenticated(true);
       return "";
     }
+    setIsOnline(false);
+    setIsAuthenticated(false);
     return typeof Object.hasOwn(responce.message, 'name') && responce.message.name === "TypeError" ? "Unable to connect to the server, please try again later." : responce.message;
-  }
+  };
 
   const addReport = async (report) => {
-    console.log(report)
     const newReport = {
       ...reportSchema,
       _id: -1,
@@ -67,21 +125,35 @@ export const DataSyncManager = () => {
       dateCreatedCli: new Date().toISOString(),
     };
 
-    const _id = await addReportAPI(user.jwt, newReport);
-
+    const responce = await addReportAPI(user.jwt, newReport);
+    console.log(responce && !responce.message)
+    if (responce && !responce.message) {
+      setIsOnline(true);
+    } else {
+      setIsOnline(false);
+    }
+    const _id = responce._id;
     const updatedReport = _id ? {
       ...newReport,
       _id: _id
     } : newReport;
 
     await addLocalReport(updatedReport);
-  }
+  };
 
   // overrides all reports!!!
   const loadServerReports = async (jwt = user.jwt) => {
-    const reports = await getReportsAPI(jwt);
-    await setAllReports(reports);
-  }
+    const responce = await getReportsAPI(jwt);
+    
+    if (responce && !responce.message) {
+      setIsOnline(true);
+      await setAllReports(responce);
+    } else if (responce.message) {
+      setIsAuthenticated(false);
+    } else {
+      setIsOnline(false);
+    }
+  };
 
   const updateExistingReport = async (updatedData) => {
     if (lastReport.dateCreatedCli === '') {
@@ -104,13 +176,60 @@ export const DataSyncManager = () => {
       answer_willing_learn: updatedData.WillingnessToLearn.answer,
       answer_self_assess: updatedData.AccurateSelfAssessment.answer,
     };
-    console.log(updatedReport)
 
     await updateLocalReport(updatedReport);
     if (updatedReport._id != '-1') {
       await updateReportAPI(user.jwt, updatedReport);
     }
-  }
+  };
+
+  const syncReports = async (jwt = user.jwt) => {
+    console.log('sync start');
+    const responceReports = await getReportsAPI(jwt);
+    if (responceReports && !responceReports.message) {
+      let localReports = reports;
+      const serverReports = responceReports;
+      // 
+      console.log('local')
+      console.log(localReports)
+      // 
+      console.log('server')
+      console.log(serverReports)
+      // 
+
+      for (let i = 0; i < localReports.length; i++) {
+        const localReport = localReports[i];
+        if (localReport._id === -1) {
+          const responce = await addReportAPI(user.jwt, localReport);
+          const _id = responce._id;
+          if (_id) {
+            localReports[i]._id = _id;
+          } else {
+            console.log('Error: sync report ' + localReports[i].dateCreatedCli);
+          }
+        }
+      }
+
+      const localDates = localReports.map(report => report.dateCreatedCli);
+
+      serverReports.forEach(serverReport => {
+        if (!localDates.includes(serverReport.dateCreatedCli)) {
+          localReports.push(serverReport);
+        }
+      });
+
+      // 
+      console.log('updated local')
+      console.log(localReports)
+      // 
+      
+      await setAllReports(localReports);
+      console.log('sync end');
+    } else {
+      setIsOnline(false);
+      console.error(responceReports.message);
+    }
+  };
 
   return {
     auth,

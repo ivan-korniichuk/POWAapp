@@ -9,6 +9,12 @@ export const DataProvider = ({ children }) => {
   const [user, setUser] = useState(userSchema);
   const [reports, setReports] = useState([]);
   const [lastReport, setLastReport] = useState(reportSchema);
+  const [isOnline, setOnline] = useState(true);
+  const [isAuthenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
+    console.log('Is online: ' + isOnline);
+  }, [isOnline]);
 
   const saveUserData = async (userData) => {
     try {
@@ -16,6 +22,18 @@ export const DataProvider = ({ children }) => {
       await AsyncStorage.setItem(USER_KEY, jsonValue);
     } catch (e) {
       console.error('Failed to save the user data.', e);
+    }
+  };
+
+  const setIsAuthenticated = (newVal) => {
+    if (newVal != isAuthenticated) {
+      setAuthenticated(newVal)
+    }
+  };
+
+  const setIsOnline = (newVal) => {
+    if (newVal != isOnline) {
+      setOnline(newVal);
     }
   };
 
@@ -44,7 +62,7 @@ export const DataProvider = ({ children }) => {
     const loadedUser = await loadUser();
     const loadedReports = await loadReports();
     return {loadedUser, loadedReports};
-  }
+  };
 
   const loadUser = async () => {
     try {
@@ -164,6 +182,10 @@ export const DataProvider = ({ children }) => {
 
   return (
     <DataContext.Provider value={{ 
+        isOnline,
+        setIsOnline,
+        isAuthenticated,
+        setIsAuthenticated,
         user, 
         reports,
         lastReport, 
