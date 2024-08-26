@@ -17,6 +17,7 @@ const CalendarScreen = ({navigation}) => {
   const { reports } = useData();
   const [ selectedDay, setSelectedDay ] = useState(null);
   const [ markedDates, setMarkedDates ] = useState({});
+  const [ filteredReports, setFilteredReports ] = useState([]);
 
   useEffect(() => {
     let newMarkedDates = {};
@@ -37,10 +38,7 @@ const CalendarScreen = ({navigation}) => {
 
   useEffect(() => {
     if (selectedDay == null) return;
-    console.log(selectedDay);
-    let filteredReports = reports.filter(report => moment(report.dateCreatedCli).format("YYYY-MM-DD") == selectedDay.dateString).sort((a, b) => a.dateCreatedCli - b.dateCreatedCli);
-    console.log(filteredReports);
-    console.log("===");
+    setFilteredReports(reports.filter(report => moment(report.dateCreatedCli).format("YYYY-MM-DD") == selectedDay.dateString).sort((a, b) => a.dateCreatedCli - b.dateCreatedCli));
   }, [reports, selectedDay])
 
   return (
@@ -57,6 +55,29 @@ const CalendarScreen = ({navigation}) => {
           enableSwipeMonths={true}
         ></Calendar>
 
+        <View style={styles.reportsListBox}>
+        {
+          filteredReports.map(report =>
+            <View style={styles.reportBox} key={report._id}>
+              <Text style={styles.textBold}>Date created</Text>
+              <Text style={styles.text}>{moment(report.dateCreatedCli).format("LLL")}</Text>
+              <Text style={styles.textBold}>Perspective</Text>
+              <Text style={styles.text}>{report.perspective}</Text>
+              <Text style={styles.text}>{report.comment_perspective}</Text>
+              <Text style={styles.textBold}>Other Centred</Text>
+              <Text style={styles.text}>{report.other_centred}</Text>
+              <Text style={styles.text}>{report.comment_other_centred}</Text>
+              <Text style={styles.textBold}>Willingness To Learn</Text>
+              <Text style={styles.text}>{report.willing_learn}</Text>
+              <Text style={styles.text}>{report.comment_willing_learn}</Text>
+              <Text style={styles.textBold}>Accurate Self-Assessment</Text>
+              <Text style={styles.text}>{report.self_assess}</Text>
+              <Text style={styles.text}>{report.comment_self_assess}</Text>
+            </View>
+          )
+        }
+        </View>
+
         <DefaultButton containerStyle={styles.topMarginButton} icon={<ArrowLeft color='#ffffff'/>} text='Back' onTouch={() => navigation.navigate('Home')}/>
 
       </ScrollView>
@@ -67,7 +88,29 @@ const CalendarScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  reportsListBox: {
+    backgroundColor: 'white',
+    marginTop: 20,
+    padding: 20,
+  },
+  reportBox: {
+    shadowColor: 'black',
+    shadowRadius: 8,
+    shadowOpacity: 0.2,
+    marginTop: 10,
+    marginBottom: 10,
+    padding: 20,
+  },
   topMarginButton: {
+    marginTop: 20,
+  },
+  text: {
+    fontSize: 20,
+    fontFamily: 'JosefinSans_500Medium',
+  },
+  textBold: {
+    fontSize: 20,
+    fontFamily: 'JosefinSans_700Bold',
     marginTop: 20,
   },
 });
