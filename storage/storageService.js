@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useRef } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { userSchema, reportSchema } from './schemas';
 import { USER_KEY, REPORTS_KEY } from '@env';
@@ -11,6 +11,7 @@ export const DataProvider = ({ children }) => {
   const [lastReport, setLastReport] = useState(reportSchema);
   const [isOnline, setOnline] = useState(true);
   const [isAuthenticated, setAuthenticated] = useState(false);
+  const syncIntervalId = useRef(null);
 
   useEffect(() => {
     console.log('Is online: ' + isOnline);
@@ -182,6 +183,7 @@ export const DataProvider = ({ children }) => {
 
   return (
     <DataContext.Provider value={{ 
+        syncIntervalId,
         isOnline,
         setIsOnline,
         isAuthenticated,

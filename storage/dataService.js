@@ -7,6 +7,7 @@ export const DataSyncManager = () => {
   const hasMountedOnline = useRef(false);
   const hasMountedAuth = useRef(false);
   const { 
+    syncIntervalId,
     isAuthenticated,
     setIsAuthenticated,
     isOnline,
@@ -35,7 +36,11 @@ export const DataSyncManager = () => {
           setIsOnline(true);
           return true;
         }
-      } else if (loadedUser.jwt) {
+      } else if (responce && responce.message) {
+        setIsOnline(true);
+        setIsAuthenticated(false);
+        return false;
+      } else if (!responce && loadedUser.jwt) {
         setIsOnline(false);
         setIsAuthenticated(true);
         return true;
@@ -47,13 +52,16 @@ export const DataSyncManager = () => {
   };
 
   useEffect(() => {
-    onOnline();
+    syncAuth();
   }, [isOnline]);
 
   useEffect(() => {
     if (hasMountedAuth.current) {
       console.log('isAuthenticated: ' + isAuthenticated);
-      if (!isAuthenticated) {
+      if (isAuthenticated) {
+        startSyncingData();
+      } else {
+        stopSyncingData();
         logout();
       }
     } else {
@@ -61,7 +69,7 @@ export const DataSyncManager = () => {
     }
   }, [isAuthenticated]);
 
-  async function onOnline() {
+  async function syncAuth() {
     if (hasMountedOnline.current) {
       if (isOnline) {
         const responce = await tryAuth(user.jwt);
@@ -79,6 +87,25 @@ export const DataSyncManager = () => {
       hasMountedOnline.current = true;
     }
   }
+
+  const startSyncingData = () => {
+    console.log('syncIntervalId.current' + syncIntervalId.current)
+    if (syncIntervalId.current === null) {
+      console.log('started')
+      syncIntervalId.current = setInterval(() => {
+        syncAuth();
+      }, 60000);
+    }
+  };
+  
+  const stopSyncingData = () => {
+    console.log('syncIntervalId.current' + syncIntervalId.current)
+    if (syncIntervalId.current !== null) {
+      console.log('ended')
+      clearInterval(syncIntervalId.current);
+      syncIntervalId.current = null;
+    }
+  };
  
   const login = async (email, password) => {
     const responce = await handleLogin(email, password);
@@ -106,6 +133,7 @@ export const DataSyncManager = () => {
     console.error('requires logout');
     await updateJWT('');
     setIsAuthenticated(false);
+    stopSyncingData();
   };
   
   const signUp = async (username, email, password) => {

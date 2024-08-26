@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Home, BarChart, SelfReflection, Help, Graph, Login, SignUp } from './screens/index';
 import { COLORS } from './constants/index';
 import { useFonts, JosefinSans_700Bold, JosefinSans_500Medium, JosefinSans_300Light, JosefinSans_400Regular } from '@expo-google-fonts/josefin-sans';
-import { DataProvider } from './storage/storageService';
-import { useData } from './storage/storageService';
+import { DataProvider, useData } from './storage/storageService';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
