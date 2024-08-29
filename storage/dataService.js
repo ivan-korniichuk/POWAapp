@@ -57,7 +57,6 @@ export const DataSyncManager = () => {
 
   useEffect(() => {
     if (hasMountedAuth.current) {
-      console.log('isAuthenticated: ' + isAuthenticated);
       if (isAuthenticated) {
         startSyncingData();
       } else {
@@ -73,8 +72,6 @@ export const DataSyncManager = () => {
     if (hasMountedOnline.current) {
       if (isOnline) {
         const responce = await tryAuth(user.jwt);
-        console.log('on online')
-        console.log(responce)
         if (responce && responce.message) {
           await logout();
           return;
@@ -89,9 +86,7 @@ export const DataSyncManager = () => {
   }
 
   const startSyncingData = () => {
-    console.log('syncIntervalId.current' + syncIntervalId.current)
     if (syncIntervalId.current === null) {
-      console.log('started')
       syncIntervalId.current = setInterval(() => {
         syncAuth();
       }, 60000);
@@ -99,9 +94,7 @@ export const DataSyncManager = () => {
   };
   
   const stopSyncingData = () => {
-    console.log('syncIntervalId.current' + syncIntervalId.current)
     if (syncIntervalId.current !== null) {
-      console.log('ended')
       clearInterval(syncIntervalId.current);
       syncIntervalId.current = null;
     }
@@ -115,11 +108,9 @@ export const DataSyncManager = () => {
         await updateJWT(responce.jwt);
         await syncReports(responce.jwt);
       } else {
-        // const reports = await getReportsAPI(responce.jwt);
         await setNewUser(responce.username, responce.email, responce.jwt);
-        // await setAllReports(reports);
-        await syncReports(responce.jwt);
       }
+      await syncReports(responce.jwt);
       setIsAuthenticated(true);
       setIsOnline(true);
       return "";
@@ -170,7 +161,7 @@ export const DataSyncManager = () => {
 
     const responce = await addReportAPI(user.jwt, newReport);
     const _id = responce ? responce._id : undefined;
-    console.log('responce add' + responce)
+
     if (responce) {
       setIsOnline(true);
     } else {
@@ -184,7 +175,7 @@ export const DataSyncManager = () => {
     await addLocalReport(updatedReport);
   };
 
-  // overrides all reports!!!
+  // overrides all reports!!! to be replaced
   const loadServerReports = async (jwt = user.jwt) => {
     const responce = await getReportsAPI(jwt);
     
@@ -228,18 +219,10 @@ export const DataSyncManager = () => {
   };
 
   const syncReports = async (jwt = user.jwt) => {
-    console.log('sync start');
     const responceReports = await getReportsAPI(jwt);
     if (responceReports && !responceReports.message) {
       let localReports = reports;
       const serverReports = responceReports;
-      // 
-      console.log('local')
-      console.log(localReports)
-      // 
-      console.log('server')
-      console.log(serverReports)
-      // 
 
       for (let i = 0; i < localReports.length; i++) {
         const localReport = localReports[i];
@@ -249,7 +232,7 @@ export const DataSyncManager = () => {
           if (_id) {
             localReports[i]._id = _id;
           } else {
-            console.log('Error: sync report ' + localReports[i].dateCreatedCli);
+            console.error('Error: sync report ' + localReports[i].dateCreatedCli);
           }
         }
       }
@@ -261,14 +244,8 @@ export const DataSyncManager = () => {
           localReports.push(serverReport);
         }
       });
-
-      // 
-      console.log('updated local')
-      console.log(localReports)
-      // 
       
       await setAllReports(localReports);
-      console.log('sync end');
     } else {
       setIsOnline(false);
       console.error(responceReports.message);
