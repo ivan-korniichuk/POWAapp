@@ -21,17 +21,18 @@ export const DataSyncManager = () => {
     setAllReports,
     updateLocalReport,
     updateJWT,
+    loadReports,
+    loadUserData,
   } = useData();
 
   const auth = async () => {
-    const loadedUser = await loadUser();
+    const [loadedUser, loadedReports] = await loadUserData();
     if (loadedUser) {
       const responce = await tryAuth(loadedUser.jwt);
       if (responce && !responce.message) {
         const _id = responce._id;
         if (_id) {
-          // await loadServerReports(loadedUser.jwt);
-          syncReports(loadedUser.jwt);
+          syncReports(loadedUser.jwt, loadedReports);
           setIsAuthenticated(true);
           setIsOnline(true);
           return true;
@@ -102,11 +103,11 @@ export const DataSyncManager = () => {
  
   const login = async (email, password) => {
     const responce = await handleLogin(email, password);
-    const loadedUser = await loadUser();
+    const [loadedUser, loadedReports] = await loadUserData();
     if (responce && !responce.message) {
       if (loadedUser && loadedUser.email === responce.email) {
         await updateJWT(responce.jwt);
-        await syncReports(responce.jwt);
+        await syncReports(responce.jwt, loadedReports);
       } else {
         await setNewUser(responce.username, responce.email, responce.jwt);
       }
@@ -218,10 +219,10 @@ export const DataSyncManager = () => {
     }
   };
 
-  const syncReports = async (jwt = user.jwt) => {
+  const syncReports = async (jwt = user.jwt, getlocalReports = reports) => {
     const responceReports = await getReportsAPI(jwt);
     if (responceReports && !responceReports.message) {
-      let localReports = reports;
+      let localReports = getlocalReports;
       const serverReports = responceReports;
 
       for (let i = 0; i < localReports.length; i++) {

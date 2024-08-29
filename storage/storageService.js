@@ -59,12 +59,6 @@ export const DataProvider = ({ children }) => {
     await saveUserData(userData);
   };
 
-  // const loadUserData = async () => {
-  //   const loadedUser = await loadUser();
-  //   const loadedReports = await loadReports();
-  //   return {loadedUser, loadedReports};
-  // };
-
   const loadUser = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem(USER_KEY);
@@ -85,11 +79,16 @@ export const DataProvider = ({ children }) => {
         setReports(JSON.parse(jsonValue));
         return JSON.parse(jsonValue);
       }
+      return [];
     } catch (e) {
       console.error('Failed to load reports.', e);
       return { message: 'Failed to load reports.' };
     }
   };
+
+  const loadUserData = async () => {
+    return [await loadUser(), await loadReports()];
+  }
 
   const deleteUserData = async () => {
     await deleteUser();
@@ -199,7 +198,9 @@ export const DataProvider = ({ children }) => {
         updateUserEmail,
         updateLocalReport,
         addLocalReport,
-        setAllReports
+        setAllReports,
+        loadReports,
+        loadUserData,
       }}>
       {children}
     </DataContext.Provider>
