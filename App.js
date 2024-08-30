@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Home, BarChart, SelfReflection, Help, Graph, Login, SignUp } from './screens/index';
 import { COLORS } from './constants/index';
 import { useFonts, JosefinSans_700Bold, JosefinSans_500Medium, JosefinSans_300Light, JosefinSans_400Regular } from '@expo-google-fonts/josefin-sans';
-import { DataProvider } from './storage/storageService';
+import { DataProvider, useData } from './storage/storageService';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -32,8 +32,10 @@ const AuthenticatedDrawer = () => (
   </Drawer.Navigator>
 );
 
-const AppNavigator = ({ isAuthenticated,  setIsAuthenticated}) => (
-  <Stack.Navigator
+const AppNavigator = () => {
+  const { isAuthenticated } = useData();
+
+  return (<Stack.Navigator
     screenOptions={{
       headerShadowVisible: false,
       headerStyle: {
@@ -49,19 +51,17 @@ const AppNavigator = ({ isAuthenticated,  setIsAuthenticated}) => (
     ) : (
       <>
         <Stack.Screen name="Login">
-          {props => <Login {...props} setIsAuthenticated={setIsAuthenticated} />}
+          {props => <Login {...props} />}
         </Stack.Screen>
         <Stack.Screen name="SignUp">
-          {props => <SignUp {...props} setIsAuthenticated={setIsAuthenticated} />}
+          {props => <SignUp {...props} />}
         </Stack.Screen>
       </>
     )}
   </Stack.Navigator>
-);
+)};
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Replace with actual authentication logic
-
   let [fontsLoaded] = useFonts({
     JosefinSans_300Light,
     JosefinSans_400Regular,
@@ -76,7 +76,7 @@ const App = () => {
   return (
     <DataProvider>
       <NavigationContainer>
-        <AppNavigator isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
+        <AppNavigator />
       </NavigationContainer>
     </DataProvider>
   );

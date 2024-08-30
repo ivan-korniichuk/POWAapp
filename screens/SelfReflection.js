@@ -160,12 +160,10 @@ const SelfReflection = ({ route, navigation }) => {
     } else {
       if (isLastPage()) {
         if (isNewReport) {
-          console.log('next add')
           addReport(responses);
           setIsNewReport(false);
         } else {
           updateExistingReport(responses);
-          console.log('next update')
         }
         setHistory([]);
         navigation.navigate('Home');

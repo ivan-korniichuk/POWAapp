@@ -12,9 +12,7 @@ export const tryAuth = async (jwt) => {
 
     const data = await response.json();
 
-    if (data._id) {
-      return data._id;
-    }
+    return data;
   } catch (error) {
     console.error('Auth Error', error);
   }
@@ -80,12 +78,10 @@ export const addReportAPI = async (jwt, report) => {
     
     const data = await response.json();
 
-    if (data._id) {
-      console.log(data._id);
-      return data._id;
-    }
+    return data;
   } catch (error) {
     console.error('Error adding report:', error);
+    return {message: error}
   }
 };
 
@@ -101,11 +97,10 @@ export const getReportsAPI = async (jwt) => {
 
     const data = await response.json();
 
-    if (data) {
-      return data;
-    }
+    return data;
   } catch (error) {
     console.error('Error fetching profile:', error);
+    return {message: error}
   }
 };
 
@@ -120,16 +115,13 @@ export const updateReportAPI = async (jwt, report) => {
       body: JSON.stringify({
         ...report
     }),
-    });
+  });
 
-    const data = await response.json();
+  const data = await response.json();
 
-    if (data) {
-      console.log('updated report data')
-      console.log(data);
-      return data;
-    }
+  return data;
   } catch (error) {
     console.error('Error fetching profile:', error);
+    return {message: error}
   }
 };
