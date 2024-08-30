@@ -1,8 +1,9 @@
-import React from 'react';
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import React, { useRef, useState, useEffect } from 'react';
+import { ScrollView, View, Text, Platform, TouchableOpacity, StyleSheet } from 'react-native';
 import { DefaultButton } from '../components/index';
 import { ArrowLeft } from 'react-native-feather';
 import { Default, HelpStyles, ScrollViewStyles } from '../styles/index.style';
+import { Audio, Video, ResizeMode, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 
 const videoPOWA = require('../assets/ThePowaModel.mp4');
 
@@ -70,23 +71,23 @@ const Help = ({ navigation }) => {
       </Text>
 
       <Video
-              ref={video}
-              source={videoPOWA}
-              resizeMode={ResizeMode.CONTAIN}
-              useNativeControls={true}
-              shouldPlay={false}
-              style={styles.video}
-              onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
-              onReadyForDisplay={videoData => {
-                if (Platform.OS === 'web') {
-                  videoData.srcElement.style.position = "initial";
-                }
-              }}
-            />
+        ref={video}
+        source={videoPOWA}
+        resizeMode={ResizeMode.CONTAIN}
+        useNativeControls={true}
+        shouldPlay={false}
+        style={styles.video}
+        onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
+        onReadyForDisplay={videoData => {
+          if (Platform.OS === 'web') {
+            videoData.srcElement.style.position = "initial";
+          }
+        }}
+      />
       
       <TouchableOpacity style={HelpStyles.vidButton} onPress={handleButtonPress}>
           <Text style={HelpStyles.vidButtonText}>More Videos</Text>
-        </TouchableOpacity>
+      </TouchableOpacity>
       
       <Text style={HelpStyles.info}>
         POWA Diagram:
@@ -146,3 +147,15 @@ const Help = ({ navigation }) => {
 };
 
 export default Help;
+
+const styles = StyleSheet.create({
+  video: {
+    width: '100%',
+    height: 'auto',
+    aspectRatio: 16 / 9,
+    backgroundColor: 'black',
+    marginBottom: 10,
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+});
