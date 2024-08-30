@@ -4,11 +4,58 @@ import { DefaultButton } from '../components/index';
 import { ArrowLeft } from 'react-native-feather';
 import { Default, HelpStyles, ScrollViewStyles } from '../styles/index.style';
 
+const videoPOWA = require('../assets/ThePowaModel.mp4');
+
 const Help = ({ navigation }) => {
+  const video = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    const setupAudioMode = async () => {
+      try {
+        await Audio.setAudioModeAsync({
+          allowsRecordingIOS: false,
+          interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
+          interruptionModeIOS: InterruptionModeIOS.DuckOthers,
+          playsInSilentModeIOS: true,
+          playThroughEarpieceAndroid: false,
+          shouldDuckAndroid: true,
+          staysActiveInBackground: false,
+        });
+
+        if (video.current) {
+          await video.current.setStatusAsync({
+            volume: 0.5,
+          });
+        }
+      } catch (error) {
+        console.error('Error setting up audio mode:', error);
+      }
+    };
+
+    setupAudioMode();
+  }, []);
+
+  const handlePlaybackStatusUpdate = (status) => {
+    setIsPlaying(status.isPlaying);
+  };
+
+  useEffect(() => {
+    handlePlayPause();
+  }, [isPlaying]);
+
+  const handlePlayPause = async () => {
+    if (video.current) {
+      if (isPlaying) {
+        await video.current.playAsync();
+      }
+    }
+  };
 
   const handleButtonPress = () => {
     console.log('Button pressed');
   };
+
 
   return (
     <View style={Default.container}>
@@ -21,6 +68,21 @@ const Help = ({ navigation }) => {
       <Text style={HelpStyles.info}>
         This video explains the POWA model for person-centered coaching:
       </Text>
+
+      <Video
+              ref={video}
+              source={videoPOWA}
+              resizeMode={ResizeMode.CONTAIN}
+              useNativeControls={true}
+              shouldPlay={false}
+              style={styles.video}
+              onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
+              onReadyForDisplay={videoData => {
+                if (Platform.OS === 'web') {
+                  videoData.srcElement.style.position = "initial";
+                }
+              }}
+            />
       
       <TouchableOpacity style={HelpStyles.vidButton} onPress={handleButtonPress}>
           <Text style={HelpStyles.vidButtonText}>More Videos</Text>
