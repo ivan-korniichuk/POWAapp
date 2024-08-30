@@ -27,7 +27,9 @@ const CalendarScreen = ({navigation}) => {
     for (let report of reports) {
       let reportDate = moment(report.dateCreatedCli).format("YYYY-MM-DD");
       if (Object.keys(newMarkedDates).includes(reportDate)) {
-        newMarkedDates[reportDate].dots.push(DOT_TYPES.report);
+        if (newMarkedDates[reportDate].dots.length < 4) {
+          newMarkedDates[reportDate].dots.push(DOT_TYPES.report);
+        }
       } else {
         newMarkedDates[reportDate] = {dots: [DOT_TYPES.report]};
       }
