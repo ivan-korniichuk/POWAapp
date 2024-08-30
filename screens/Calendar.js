@@ -61,17 +61,29 @@ const CalendarScreen = ({navigation}) => {
             <View style={styles.reportBox} key={report._id}>
               <Text style={styles.textBold}>Date created</Text>
               <Text style={styles.text}>{moment(report.dateCreatedCli).format("LLL")}</Text>
-              <Text style={styles.textBold}>Perspective</Text>
-              <Text style={styles.text}>{report.perspective}</Text>
+
+              <View style={styles.row}>
+                <Text style={styles.textBold}>Perspective</Text>
+                <Text style={[styles.text, styles.right]}>{report.perspective}</Text>
+              </View>
               <Text style={styles.text}>{report.comment_perspective}</Text>
-              <Text style={styles.textBold}>Other Centred</Text>
-              <Text style={styles.text}>{report.other_centred}</Text>
+
+              <View style={styles.row}>
+                <Text style={styles.textBold}>Other Centred</Text>
+                <Text style={[styles.text, styles.right]}>{report.other_centred}</Text>
+              </View>
               <Text style={styles.text}>{report.comment_other_centred}</Text>
-              <Text style={styles.textBold}>Willingness To Learn</Text>
-              <Text style={styles.text}>{report.willing_learn}</Text>
+
+              <View style={styles.row}>
+                <Text style={styles.textBold}>Willingness To Learn</Text>
+                <Text style={[styles.text, styles.right]}>{report.willing_learn}</Text>
+              </View>
               <Text style={styles.text}>{report.comment_willing_learn}</Text>
-              <Text style={styles.textBold}>Accurate Self-Assessment</Text>
-              <Text style={styles.text}>{report.self_assess}</Text>
+
+              <View style={styles.row}>
+                <Text style={styles.textBold}>Accurate Self-Assessment</Text>
+                <Text style={[styles.text, styles.right]}>{report.self_assess}</Text>
+              </View>
               <Text style={styles.text}>{report.comment_self_assess}</Text>
             </View>
           )
@@ -107,12 +119,23 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontFamily: 'JosefinSans_500Medium',
+    flex: 1,
   },
   textBold: {
     fontSize: 20,
     fontFamily: 'JosefinSans_700Bold',
-    marginTop: 20,
   },
+  right: {
+    textAlign: 'right',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 10,
+    paddingTop: 10,
+    borderTopWidth: 1,
+  }
 });
 
 export default CalendarScreen;
