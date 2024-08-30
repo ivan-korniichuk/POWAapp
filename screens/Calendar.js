@@ -53,12 +53,13 @@ const CalendarScreen = ({navigation}) => {
           markingType={'multi-dot'}
           markedDates={markedDates}
           enableSwipeMonths={true}
+          style={styles.calendar}
         ></Calendar>
 
-        <View style={styles.reportsListBox}>
+        <View>
         {
           filteredReports.map(report =>
-            <View style={styles.reportBox} key={report._id}>
+            <View style={styles.reportListBox} key={report.dateCreatedCli}>
               <Text style={styles.textBold}>Date created</Text>
               <Text style={styles.text}>{moment(report.dateCreatedCli).format("LLL")}</Text>
 
@@ -89,10 +90,8 @@ const CalendarScreen = ({navigation}) => {
           )
         }
         </View>
-
-        <DefaultButton containerStyle={styles.topMarginButton} icon={<ArrowLeft color='#ffffff'/>} text='Back' onTouch={() => navigation.navigate('Home')}/>
-
       </ScrollView>
+        <DefaultButton containerStyle={styles.topMarginButton} icon={<ArrowLeft color='#ffffff'/>} text='Back' onTouch={() => navigation.navigate('Home')}/>
 
     </View>
   );
@@ -100,21 +99,17 @@ const CalendarScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  reportsListBox: {
+  calendar: {
+    borderRadius: 8,
+  },
+  reportListBox: {
     backgroundColor: 'white',
     marginTop: 20,
     padding: 20,
-  },
-  reportBox: {
-    shadowColor: 'black',
-    shadowRadius: 8,
-    shadowOpacity: 0.2,
-    marginTop: 10,
-    marginBottom: 10,
-    padding: 20,
+    borderRadius: 8,
   },
   topMarginButton: {
-    marginTop: 20,
+    marginTop: 10,
   },
   text: {
     fontSize: 20,
