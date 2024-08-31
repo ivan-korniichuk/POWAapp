@@ -60,34 +60,37 @@ const BarChartComp = ({ barChartValues, barChartPrevValues }) => {
 
 const Triangle = ({ children, direction, size = 10, color = 'blue', top = false }) => {
   const styles = {
-    fontSize: 15,
-    color: color,
-    backgroundColor: 'transparent',
-    position: "absolute",
-    display: "flex",
-    left: '50%',
-    marginLeft: '-25px',
-    backgroundColor: "rgba(255,255,255,0.8)",
-    padding: 5
+    container: {
+      position: "absolute",
+      left: '50%',
+      transform: [{ translateX: '-50%' }],
+      top: top ? -10 : 'auto',
+      bottom: !top ? -10 : 'auto',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: "rgba(255,255,255,0.8)",
+      padding: 5,
+    },
+    text: {
+      fontSize: 15,
+      color: color,
+      marginLeft: 5,
+    }
   };
 
-  if (top) {
-    styles["top"] = -10;
-  } else {
-    styles["bottom"] = -10;
-  };
-
-  return <div style={styles}>
-    <TriangleShape direction={direction} size={size} color={color} top={top} />
-    <TriangleLabel direction={direction} size={size} color={color} top={top}>{children}</TriangleLabel>
-  </div>;
+  return (
+    <View style={styles.container}>
+      <TriangleShape direction={direction} size={size} color={color} />
+      <Text style={styles.text}>{children}</Text>
+    </View>
+  );
 };
 
 const TriangleShape = ({ direction, size = 10, color = 'blue', top = false }) => {
   const styles = {
     width: 0,
     height: 0,
-    backgroundColor: 'transparent',
     borderStyle: 'solid',
     borderLeftWidth: size / 2,
     borderRightWidth: size / 2,
@@ -97,8 +100,6 @@ const TriangleShape = ({ direction, size = 10, color = 'blue', top = false }) =>
     borderRightColor: 'transparent',
     borderBottomColor: direction === 'up' ? color : 'transparent',
     borderTopColor: direction === 'down' ? color : 'transparent',
-    transform: [{ translateY: 5 }],
-    marginRight: 5
   };
 
   return <View style={styles} />;
