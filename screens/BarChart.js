@@ -9,7 +9,6 @@ import { useData } from '../storage/storageService';
 const BarChart = ({navigation}) => {
   const { reports } = useData();
   const [barValues, setBarValues] = useState([0,0,0,0]);
-  const [barPrevValues, setBarPrevValues] = useState([0,0,0,0]);
   const [features, setFeatures] = useState(["","",""]);
   
   useEffect(() => {
@@ -67,43 +66,26 @@ const BarChart = ({navigation}) => {
       "willing_learn": 0
     };
 
-    let previousValues = {
-      "other_centred": 0,
-      "perspective": 0,
-      "self_assess": 0,
-      "willing_learn": 0
-    };
-
-    let averages;
+    // for further updates
+    // let previousValues;
 
     switch(buttonName) {
       case 'Week':
-        averages = getWeeklyAverages(reports);
-        thisValues = averages.currentWeek;
-        previousValues = averages.previousWeek;
+        thisValues = {...getWeeklyAverages(reports).currentWeek};
         break;
       case 'Month':
-        averages = getMonthlyAverages(reports);
-        thisValues = averages.currentMonth;
-        previousValues = averages.previousMonth;
+        thisValues = {...getMonthlyAverages(reports).currentMonth};
         break;
       case 'All Time':
         thisValues = getAllTimeAverages(reports);
-        previousValues = thisValues;
         break;
     }
-
+    
     updateBarValues([
       thisValues.perspective,
       thisValues.other_centred,
       thisValues.willing_learn,
       thisValues.self_assess
-    ]);
-    setBarPrevValues([
-      previousValues.perspective,
-      previousValues.other_centred,
-      previousValues.willing_learn,
-      previousValues.self_assess
     ]);
     console.log(buttonName);
   }
@@ -112,7 +94,7 @@ const BarChart = ({navigation}) => {
       <TimeSelector onSelect={( buttonName ) => {onSelect(buttonName)}}/>
 
       <ScrollView contentContainerStyle={ScrollViewStyles.scrollViewContent} style={ScrollViewStyles.scrollView}>
-        <BarChartComp barChartValues={barValues} barChartPrevValues={barPrevValues} />
+        <BarChartComp barChartValues={barValues}/>
 
         <View style={styles.progress}>
           <Text style={styles.text}>Show Progress Direction</Text>

@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { DataSyncManager } from '../storage/dataService';
+import { useData } from '../storage/storageService';
 import { DefaultButton } from '../components/index'
 import { COLORS } from '../constants'
 
-const SignIn = ({ navigation, setIsAuthenticated }) => {
+const SignIn = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
+  const { setIsAuthenticated } = useData();
   const { signUp } = DataSyncManager();
 
   async function handleSignUp() {

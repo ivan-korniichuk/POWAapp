@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { DataSyncManager } from '../storage/dataService';
+import { useData } from '../storage/storageService';
 import { DefaultButton } from '../components'
 import { COLORS } from '../constants'
 
-const Login = ({ navigation, setIsAuthenticated }) => {
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
+  const { setIsAuthenticated } = useData();
   const { auth, login } = DataSyncManager();
 
   useEffect(() => {
