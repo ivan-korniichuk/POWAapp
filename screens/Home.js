@@ -159,6 +159,12 @@ const Home = ({ navigation }) => {
             containerStyle={styles.actionButton}
           />
           <DefaultButton 
+            icon={<Image source={require('../assets/icon5.png')} style={styles.icon} />}
+            text='Calendar'
+            onTouch={() => navigation.navigate('Calendar')}
+            containerStyle={styles.actionButton}
+          />
+          <DefaultButton 
             icon={<Image source={require('../assets/icon4.png')} style={styles.icon} />}
             text='Help'
             onTouch={() => navigation.navigate('Help')}
