@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useRef } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { userSchema, reportSchema } from './schemas';
 import { USER_KEY, REPORTS_KEY } from '@env';
@@ -9,6 +9,13 @@ export const DataProvider = ({ children }) => {
   const [user, setUser] = useState(userSchema);
   const [reports, setReports] = useState([]);
   const [lastReport, setLastReport] = useState(reportSchema);
+  const [isOnline, setOnline] = useState(true);
+  const [isAuthenticated, setAuthenticated] = useState(false);
+  const syncIntervalId = useRef(null);
+
+  useEffect(() => {
+    console.log('Is online: ' + isOnline);
+  }, [isOnline]);
 
   const saveUserData = async (userData) => {
     try {
@@ -16,6 +23,18 @@ export const DataProvider = ({ children }) => {
       await AsyncStorage.setItem(USER_KEY, jsonValue);
     } catch (e) {
       console.error('Failed to save the user data.', e);
+    }
+  };
+
+  const setIsAuthenticated = (newVal) => {
+    if (newVal != isAuthenticated) {
+      setAuthenticated(newVal)
+    }
+  };
+
+  const setIsOnline = (newVal) => {
+    if (newVal != isOnline) {
+      setOnline(newVal);
     }
   };
 
@@ -40,12 +59,6 @@ export const DataProvider = ({ children }) => {
     await saveUserData(userData);
   };
 
-  const loadUserData = async () => {
-    const loadedUser = await loadUser();
-    const loadedReports = await loadReports();
-    return {loadedUser, loadedReports};
-  }
-
   const loadUser = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem(USER_KEY);
@@ -66,11 +79,16 @@ export const DataProvider = ({ children }) => {
         setReports(JSON.parse(jsonValue));
         return JSON.parse(jsonValue);
       }
+      return [];
     } catch (e) {
       console.error('Failed to load reports.', e);
       return { message: 'Failed to load reports.' };
     }
   };
+
+  const loadUserData = async () => {
+    return [await loadUser(), await loadReports()];
+  }
 
   const deleteUserData = async () => {
     await deleteUser();
@@ -164,6 +182,11 @@ export const DataProvider = ({ children }) => {
 
   return (
     <DataContext.Provider value={{ 
+        syncIntervalId,
+        isOnline,
+        setIsOnline,
+        isAuthenticated,
+        setIsAuthenticated,
         user, 
         reports,
         lastReport, 
@@ -175,7 +198,9 @@ export const DataProvider = ({ children }) => {
         updateUserEmail,
         updateLocalReport,
         addLocalReport,
-        setAllReports
+        setAllReports,
+        loadReports,
+        loadUserData,
       }}>
       {children}
     </DataContext.Provider>
