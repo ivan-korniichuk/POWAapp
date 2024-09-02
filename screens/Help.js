@@ -110,7 +110,7 @@ const Help = ({ navigation }) => {
       </Text>
 
         <Text style={HelpStyles.info}>
-        To rate your performance open the Self-Reflection page and navigate through the features of the POWA model using the arrow buttons.
+        To rate your performance open the "Self-Reflection" page and navigate through the features of the POWA model using the arrow buttons.
       </Text>
 
       <Text style={HelpStyles.info}>
@@ -122,7 +122,7 @@ const Help = ({ navigation }) => {
       </Text>
 
       <Text style={HelpStyles.info}>
-        You can view your progress in different attributes on a graph over various time periods in the "My Progress" page.
+        You can view your progress in different attributes on a graph over various time periods in the "Track My Progress" page.
       </Text>
 
       <Text style={HelpStyles.info}>
