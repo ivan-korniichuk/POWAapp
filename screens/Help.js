@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { ScrollView, View, Text, Platform, TouchableOpacity, StyleSheet } from 'react-native';
+import { ScrollView, View, Image, Text, Platform, TouchableOpacity, StyleSheet } from 'react-native';
 import { DefaultButton } from '../components/index';
 import { ArrowLeft } from 'react-native-feather';
 import { Default, HelpStyles, ScrollViewStyles } from '../styles/index.style';
@@ -92,6 +92,11 @@ const Help = ({ navigation }) => {
       <Text style={HelpStyles.info}>
         POWA Diagram:
       </Text>
+
+      <Image
+        style={styles.image}
+        source={require('../assets/POWAimage.png')}
+      />
       
       <Text style={HelpStyles.info}>
       </Text>
@@ -158,4 +163,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: 'hidden',
   },
+
+  image: {
+    width: '100%',
+    heigh: 'auto',
+    aspectRatio: 16/9
+  }
 });
