@@ -107,7 +107,7 @@ const BarChart = ({navigation}) => {
       <TimeSelector onSelect={( buttonName ) => {onSelect(buttonName)}}/>
 
       <ScrollView contentContainerStyle={ScrollViewStyles.scrollViewContent} style={ScrollViewStyles.scrollView}>
-        <BarChartComp barChartValues={barValues} barChartPrevValues={showProgressDirection ? barValues : barPrevValues} />
+        <BarChartComp barChartValues={barValues} barChartPrevValues={showProgressDirection ? barPrevValues : barValues} />
 
         <View style={styles.progress}>
           <Text style={styles.text}>Show Progress Direction</Text>
