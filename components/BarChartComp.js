@@ -151,25 +151,25 @@ const BottomBars = ({values, barChartValues, barChartPrevValues, changeDirection
       <View style={[BarChartStyles.bar, {height: `${val1/minBarValue*100}%` }, {borderRightWidth:1}]}>
         { (() => {
           let change = barChartValues[0] - barChartPrevValues[0];
-          return val1 < 0 && (changeDirections[0] != 0) && <Triangle direction={changeDirections[0] == -1 ? "up" : "down"} color={changeDirections[0] == -1 ? "green" : "red"}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
+          return val1 < 0 && (changeDirections[0] != 0) && <Triangle direction={changeDirections[0] == -1 ? "down" : "up"} color={changeDirections[0] == -1 ? "red" : "green"}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
         })() }
         </View>
       <View style={[BarChartStyles.bar, {height: `${val2/minBarValue*100}%` }, {borderRightWidth:1}]}>
         { (() => {
           let change = barChartValues[1] - barChartPrevValues[1];
-          return val2 < 0 && (changeDirections[1] != 0) && <Triangle direction={changeDirections[1] == -1 ? "up" : "down"} color={changeDirections[1] == -1 ? "green" : "red"}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
+          return val2 < 0 && (changeDirections[1] != 0) && <Triangle direction={changeDirections[1] == -1 ? "down" : "up"} color={changeDirections[1] == -1 ? "red" : "green"}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
         })() }
         </View>
       <View style={[BarChartStyles.bar, {height: `${val3/minBarValue*100}%` }, {borderRightWidth:1}]}>
         { (() => {
           let change = barChartValues[2] - barChartPrevValues[2];
-          return val3 < 0 && (changeDirections[2] != 0) && <Triangle direction={changeDirections[2] == -1 ? "up" : "down"} color={changeDirections[2] == -1 ? "green" : "red"}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
+          return val3 < 0 && (changeDirections[2] != 0) && <Triangle direction={changeDirections[2] == -1 ? "down" : "up"} color={changeDirections[2] == -1 ? "red" : "green"}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
         })() }
         </View>
       <View style={[BarChartStyles.bar, {height: `${val4/minBarValue*100}%` }, {borderRightWidth:1}]}>
         { (() => {
           let change = barChartValues[3] - barChartPrevValues[3];
-          return val4 < 0 && (changeDirections[3] != 0) && <Triangle direction={changeDirections[3] == -1 ? "up" : "down"} color={changeDirections[3] == -1 ? "green" : "red"}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
+          return val4 < 0 && (changeDirections[3] != 0) && <Triangle direction={changeDirections[3] == -1 ? "down" : "up"} color={changeDirections[3] == -1 ? "red" : "green"}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
         })() }
         </View>
     </View>
