@@ -93,10 +93,13 @@ const Help = ({ navigation }) => {
         POWA Diagram:
       </Text>
 
-      <Image
-        style={styles.image}
-        source={require('../assets/POWAimage.png')}
-      />
+      <View style={styles.imageContainer}>
+        <Image
+          style={styles.image}
+          source={require('../assets/POWAimage.png')}
+          resizeMode="contain"
+        />
+      </View>
       
       <Text style={HelpStyles.info}>
       </Text>
@@ -164,9 +167,16 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
 
+  imageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
   image: {
+    flex: 1,
     width: '100%',
-    heigh: 'auto',
+    height: 'auto',
     aspectRatio: 16/9
   }
 });
