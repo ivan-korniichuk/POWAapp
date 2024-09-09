@@ -9,8 +9,10 @@ import { useData } from '../storage/storageService';
 const BarChart = ({navigation}) => {
   const { reports } = useData();
   const [barValues, setBarValues] = useState([0,0,0,0]);
+  const [barPrevValues, setBarPrevValues] = useState([0,0,0,0]);
   const [features, setFeatures] = useState(["","",""]);
-  
+  const [showProgressDirection, setShowProgressDirection] = useState(false);
+
   useEffect(() => {
     onSelect("Week");
   }, []);
@@ -66,39 +68,50 @@ const BarChart = ({navigation}) => {
       "willing_learn": 0
     };
 
-    // for further updates
-    // let previousValues;
+    let previousValues = thisValues;
 
     switch(buttonName) {
       case 'Week':
         thisValues = {...getWeeklyAverages(reports).currentWeek};
+        previousValues = {...getWeeklyAverages(reports).previousWeek};
         break;
       case 'Month':
         thisValues = {...getMonthlyAverages(reports).currentMonth};
+        previousValues = {...getMonthlyAverages(reports).previousMonth};
         break;
       case 'All Time':
         thisValues = getAllTimeAverages(reports);
+        previousValues = thisValues;
         break;
     }
-    
+
     updateBarValues([
       thisValues.perspective,
       thisValues.other_centred,
       thisValues.willing_learn,
       thisValues.self_assess
     ]);
+
+    setBarPrevValues([
+      previousValues.perspective,
+      previousValues.other_centred,
+      previousValues.willing_learn,
+      previousValues.self_assess
+    ]); 
+
     console.log(buttonName);
   }
+
   return (
     <View style={BarChartStyles.container}>
       <TimeSelector onSelect={( buttonName ) => {onSelect(buttonName)}}/>
 
       <ScrollView contentContainerStyle={ScrollViewStyles.scrollViewContent} style={ScrollViewStyles.scrollView}>
-        <BarChartComp barChartValues={barValues}/>
+        <BarChartComp barChartValues={barValues} barChartPrevValues={showProgressDirection ? barPrevValues : barValues} />
 
         <View style={styles.progress}>
           <Text style={styles.text}>Show Progress Direction</Text>
-          <ColoredToggleButton untoggledBackgroundColor={'white'} toggledBackgroundColor={'#3FCBB0'} toggled={false} onPress={()=>{}}/>
+          <ColoredToggleButton untoggledBackgroundColor={'white'} toggledBackgroundColor={'#3FCBB0'} toggled={showProgressDirection} onPress={()=>{ setShowProgressDirection(!showProgressDirection); }}/>
         </View>
 
         <Text style={BarChartStyles.mainText}>General:</Text>
