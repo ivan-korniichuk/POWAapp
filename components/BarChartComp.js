@@ -131,19 +131,19 @@ const TopBars = ({values, barChartValues, barChartPrevValues, changeDirections, 
       <View style={[BarChartStyles.bar, {height: `${val2/maxBarValue*100}%` }, {borderRightWidth:1}]}>
         { (() => {
           let change = barChartValues[1] - barChartPrevValues[1];
-          return val2 > 0 && (changeDirections[1] != 0) && <Triangle top direction={changeDirections[1] == -1 ? "up" : "down"} color={colours[0]}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
+          return val2 > 0 && (changeDirections[1] != 0) && <Triangle top direction={changeDirections[1] == -1 ? "up" : "down"} color={colours[1]}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
         })() }
         </View>
       <View style={[BarChartStyles.bar, {height: `${val3/maxBarValue*100}%` }, {borderRightWidth:1}]}>
         { (() => {
           let change = barChartValues[2] - barChartPrevValues[2];
-          return val3 > 0 && (changeDirections[2] != 0) && <Triangle top direction={changeDirections[2] == -1 ? "up" : "down"} color={colours[0]}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
+          return val3 > 0 && (changeDirections[2] != 0) && <Triangle top direction={changeDirections[2] == -1 ? "up" : "down"} color={colours[2]}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
         })() }
         </View>
       <View style={[BarChartStyles.bar, {height: `${val4/maxBarValue*100}%` }, {borderRightWidth:1}]}>
         { (() => {
           let change = barChartValues[3] - barChartPrevValues[3];
-          return val4 > 0 && (changeDirections[3] != 0) && <Triangle top direction={changeDirections[3] == -1 ? "up" : "down"} color={colours[0]}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
+          return val4 > 0 && (changeDirections[3] != 0) && <Triangle top direction={changeDirections[3] == -1 ? "up" : "down"} color={colours[3]}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
         })() }
         </View>
     </View>
@@ -166,19 +166,19 @@ const BottomBars = ({values, barChartValues, barChartPrevValues, changeDirection
       <View style={[BarChartStyles.bar, {height: `${val2/minBarValue*100}%` }, {borderRightWidth:1}]}>
         { (() => {
           let change = barChartValues[1] - barChartPrevValues[1];
-          return val2 < 0 && (changeDirections[1] != 0) && <Triangle direction={changeDirections[1] == -1 ? "down" : "up"} color={colours[0]}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
+          return val2 < 0 && (changeDirections[1] != 0) && <Triangle direction={changeDirections[1] == -1 ? "down" : "up"} color={colours[1]}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
         })() }
         </View>
       <View style={[BarChartStyles.bar, {height: `${val3/minBarValue*100}%` }, {borderRightWidth:1}]}>
         { (() => {
           let change = barChartValues[2] - barChartPrevValues[2];
-          return val3 < 0 && (changeDirections[2] != 0) && <Triangle direction={changeDirections[2] == -1 ? "down" : "up"} color={colours[0]}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
+          return val3 < 0 && (changeDirections[2] != 0) && <Triangle direction={changeDirections[2] == -1 ? "down" : "up"} color={colours[2]}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
         })() }
         </View>
       <View style={[BarChartStyles.bar, {height: `${val4/minBarValue*100}%` }, {borderRightWidth:1}]}>
         { (() => {
           let change = barChartValues[3] - barChartPrevValues[3];
-          return val4 < 0 && (changeDirections[3] != 0) && <Triangle direction={changeDirections[3] == -1 ? "down" : "up"} color={colours[0]}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
+          return val4 < 0 && (changeDirections[3] != 0) && <Triangle direction={changeDirections[3] == -1 ? "down" : "up"} color={colours[3]}>{change > 0 ? "+" + change.toFixed(1) : change.toFixed(1)}</Triangle>
         })() }
         </View>
     </View>
