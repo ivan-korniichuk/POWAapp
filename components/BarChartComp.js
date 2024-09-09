@@ -62,8 +62,8 @@ const Triangle = ({ children, direction, size = 10, color = 'blue', top = false 
   const styles = {
     container: {
       position: "absolute",
-      left: '50%',
-      transform: [{ translateX: '-50%' }],
+      left: '10%',
+      right: '10%',
       top: top ? -10 : 'auto',
       bottom: !top ? -10 : 'auto',
       flexDirection: 'row',
