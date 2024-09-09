@@ -11,7 +11,8 @@ const BarChart = ({navigation}) => {
   const [barValues, setBarValues] = useState([0,0,0,0]);
   const [barPrevValues, setBarPrevValues] = useState([0,0,0,0]);
   const [features, setFeatures] = useState(["","",""]);
-  
+  const [showProgressDirection, setShowProgressDirection] = useState(false);
+
   useEffect(() => {
     onSelect("Week");
   }, []);
@@ -67,14 +68,7 @@ const BarChart = ({navigation}) => {
       "willing_learn": 0
     };
 
-    // for further updates
-    // let previousValues;
-    let previousValues = {
-      "other_centred": 0,
-      "perspective": 0,
-      "self_assess": 0,
-      "willing_learn": 0
-    };
+    let previousValues = thisValues;
 
     switch(buttonName) {
       case 'Week':
@@ -97,12 +91,14 @@ const BarChart = ({navigation}) => {
       thisValues.willing_learn,
       thisValues.self_assess
     ]);
+
     setBarPrevValues([
       previousValues.perspective,
       previousValues.other_centred,
       previousValues.willing_learn,
       previousValues.self_assess
-    ]);
+    ]); 
+
     console.log(buttonName);
   }
 
@@ -111,11 +107,11 @@ const BarChart = ({navigation}) => {
       <TimeSelector onSelect={( buttonName ) => {onSelect(buttonName)}}/>
 
       <ScrollView contentContainerStyle={ScrollViewStyles.scrollViewContent} style={ScrollViewStyles.scrollView}>
-        <BarChartComp barChartValues={barValues} barChartPrevValues={barPrevValues} />
+        <BarChartComp barChartValues={barValues} barChartPrevValues={showProgressDirection ? barValues : barPrevValues} />
 
         <View style={styles.progress}>
           <Text style={styles.text}>Show Progress Direction</Text>
-          <ColoredToggleButton untoggledBackgroundColor={'white'} toggledBackgroundColor={'#3FCBB0'} toggled={false} onPress={()=>{}}/>
+          <ColoredToggleButton untoggledBackgroundColor={'white'} toggledBackgroundColor={'#3FCBB0'} toggled={showProgressDirection} onPress={()=>{ setShowProgressDirection(!showProgressDirection); }}/>
         </View>
 
         <Text style={BarChartStyles.mainText}>General:</Text>
