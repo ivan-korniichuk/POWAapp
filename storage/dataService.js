@@ -158,6 +158,7 @@ export const DataSyncManager = () => {
       answer_willing_learn: report.WillingnessToLearn.answer,
       answer_self_assess: report.AccurateSelfAssessment.answer,
       dateCreatedCli: new Date().toISOString(),
+      dateModifiedCli: new Date().toISOString(),
     };
 
     const responce = await addReportAPI(user.jwt, newReport);
@@ -211,6 +212,7 @@ export const DataSyncManager = () => {
       answer_other_centred: updatedData.OtherCentred.answer,
       answer_willing_learn: updatedData.WillingnessToLearn.answer,
       answer_self_assess: updatedData.AccurateSelfAssessment.answer,
+      dateModifiedCli: new Date().toISOString(),
     };
 
     await updateLocalReport(updatedReport);
@@ -238,11 +240,17 @@ export const DataSyncManager = () => {
         }
       }
 
-      const localDates = localReports.map(report => report.dateCreatedCli);
+      const localIDs = localReports.map(report => report._id);
 
       serverReports.forEach(serverReport => {
-        if (!localDates.includes(serverReport.dateCreatedCli)) {
+        if (!localIDs.includes(serverReport._id)) {
           localReports.push(serverReport);
+        } else {
+          if (serverReport.dateModifiedCli > localReports.find(r => r._id == serverReport._id).dateModifiedCli) {
+            // server has newer version, update local version
+            localReports = localReports.filter(r => r._id != serverReport._id);
+            localReports.push(serverReport);
+          }
         }
       });
       

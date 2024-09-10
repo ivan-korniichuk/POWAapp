@@ -14,10 +14,10 @@ export const reportSchema = {
   comment_other_centred: '',
   comment_willing_learn: '',
   comment_self_assess: '',
-  dateCreatedCli: '',
   answer_perspective: '',
   answer_other_centred: '',
   answer_willing_learn: '',
   answer_self_assess: '',
-  __v: -1,
+  dateCreatedCli: '',
+  dateModifiedCli: '',
 };
