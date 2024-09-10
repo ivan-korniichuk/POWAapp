@@ -6,3 +6,4 @@ export { default as BarChartComp } from './BarChartComp';
 export { default as ColoredToggleButton } from './ColoredToggleButton';
 export { default as ProgressGraphComp } from './ProgressGraphComp';
 export { default as ProgressCard } from './ProgressCard';
+export { default as CustomWidget } from './CustomWidget';

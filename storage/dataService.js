@@ -7,6 +7,7 @@ export const DataSyncManager = () => {
   const hasMountedOnline = useRef(false);
   const hasMountedAuth = useRef(false);
   const { 
+    changeWidgetStatus,
     syncIntervalId,
     isAuthenticated,
     setIsAuthenticated,
@@ -27,8 +28,12 @@ export const DataSyncManager = () => {
 
   const auth = async () => {
     const [loadedUser, loadedReports] = await loadUserData();
+
     if (loadedUser) {
+      changeWidgetStatus('loading');
       const responce = await tryAuth(loadedUser.jwt);
+      changeWidgetStatus('');
+
       if (responce && !responce.message) {
         const _id = responce._id;
         if (_id) {
@@ -47,6 +52,7 @@ export const DataSyncManager = () => {
         return true;
       }
     }
+
     setIsOnline(false);
     setIsAuthenticated(false);
     return false;
@@ -102,7 +108,9 @@ export const DataSyncManager = () => {
   };
  
   const login = async (email, password) => {
+    changeWidgetStatus('loading');
     const responce = await handleLogin(email, password);
+    changeWidgetStatus('');
     const [loadedUser, loadedReports] = await loadUserData();
     if (responce && !responce.message) {
       if (loadedUser && loadedUser.email === responce.email) {
@@ -129,7 +137,9 @@ export const DataSyncManager = () => {
   };
   
   const signUp = async (username, email, password) => {
+    changeWidgetStatus('loading');
     const responce = await handleSignUp(username, email, password);
+    changeWidgetStatus('');
     if (responce && !responce.message) {
       await setNewUser(responce.username, responce.email, responce.jwt);
       setIsOnline(true);
