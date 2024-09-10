@@ -7,6 +7,8 @@ const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
   const [user, setUser] = useState(userSchema);
+  const [widgedStatus, setWidgetStatus] = useState('');
+  const [widgedVisible, setWidgetVisible] = useState(false);
   const [reports, setReports] = useState([]);
   const [lastReport, setLastReport] = useState(reportSchema);
   const [isOnline, setOnline] = useState(true);
@@ -15,7 +17,31 @@ export const DataProvider = ({ children }) => {
 
   useEffect(() => {
     console.log('Is online: ' + isOnline);
+    // if (isOnline) {
+    //   changeWidgetStatus('online');
+    // } else {
+    //   changeWidgetStatus('offline');
+    // }
   }, [isOnline]);
+
+  const changeWidgetStatus = (newStatus) => {
+    console.log('newStatus' + newStatus);
+
+    if (newStatus === 'online' || newStatus === 'offline') {
+      setWidgetStatus(newStatus);
+      setWidgetVisible(true);
+      setTimeout(() => {
+        if (widgedStatus === 'online' || widgedStatus === 'offline') {
+          setWidgetVisible(false);
+        }
+      }, 1500);
+    } else if (newStatus === 'loading') {
+      setWidgetStatus('loading');
+      setWidgetVisible(true);
+    } else {
+      setWidgetVisible(false);
+    }
+  }
 
   const saveUserData = async (userData) => {
     try {
@@ -181,7 +207,10 @@ export const DataProvider = ({ children }) => {
   };
 
   return (
-    <DataContext.Provider value={{ 
+    <DataContext.Provider value={{
+        widgedStatus,
+        widgedVisible,
+        changeWidgetStatus,
         syncIntervalId,
         isOnline,
         setIsOnline,
