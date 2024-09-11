@@ -51,12 +51,12 @@ const CustomWidget = ({ visible, status }) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    flex: 1,
+    pointerEvents: 'none',
     justifyContent: 'top',
     alignItems: 'center',
     position: 'absolute',
     width: '100%',
-    zIndex: 1000,
+    zIndex: 1,
   },
   container: {
     height: 60,
