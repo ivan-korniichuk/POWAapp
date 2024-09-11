@@ -22,15 +22,15 @@ const AuthenticatedDrawer = () => (
     }}
   >
     <Drawer.Screen name="Home" component={Home} options={{ title: 'The POWA Model' }} />
-    <Drawer.Screen name="Help" component={Help} />
-    <Drawer.Screen name="Graph" component={Graph} options={{ title: 'Track My Progress' }} />
     <Drawer.Screen
         name="SelfReflection"
         component={SelfReflection}
-        options={{ headerLeft: () => null, gestureEnabled: false, swipeEnabled:false }}
+        options={{ headerLeft: () => null, gestureEnabled: false, swipeEnabled:false, title: 'Self-Reflection' }}
     />
+    <Drawer.Screen name="Graph" component={Graph} options={{ title: 'Track My Progress' }} />
     <Drawer.Screen name="BarChart" component={BarChart} options={{ title: 'My Statistics' }} />
     <Drawer.Screen name="Calendar" component={Calendar} />
+    <Drawer.Screen name="Help" component={Help} />
   </Drawer.Navigator>
 );
 
