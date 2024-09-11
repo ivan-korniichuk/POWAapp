@@ -8,24 +8,24 @@ import { useData } from '../storage/storageService';
 import { DataSyncManager } from '../storage/dataService';
 
 const pages = [
-  'AccurateSelfAssessment',
-  'OtherCentred',
   'Perspective',
-  'WillingnessToLearn'
+  'OtherCentred',
+  'WillingnessToLearn',
+  'AccurateSelfAssessment',
 ];
 
 const initialVisitedState = {
-  AccurateSelfAssessment: false,
-  OtherCentred: false,
   Perspective: false,
+  OtherCentred: false,
   WillingnessToLearn: false,
+  AccurateSelfAssessment: false,
 };
 
 const initialResponsesState = {
-  AccurateSelfAssessment: { value: 0, comment: '', answer: '' },
-  OtherCentred: { value: 0, comment: '', answer: '' },
   Perspective: { value: 0, comment: '', answer: '' },
+  OtherCentred: { value: 0, comment: '', answer: '' },
   WillingnessToLearn: { value: 0, comment: '', answer: '' },
+  AccurateSelfAssessment: { value: 0, comment: '', answer: '' },
 };
 
 const SelfReflection = ({ route, navigation }) => {
@@ -39,8 +39,8 @@ const SelfReflection = ({ route, navigation }) => {
   const [visited, setVisited] = useState(initialVisitedState);
   const [visitedBackup, setVisitedBackup] = useState(initialVisitedState);
 
-  const [currentPage, setCurrentPage] = useState(initialPage || 'AccurateSelfAssessment');
-  const [history, setHistory] = useState([initialPage || 'AccurateSelfAssessment']);
+  const [currentPage, setCurrentPage] = useState(initialPage || 'Perspective');
+  const [history, setHistory] = useState([initialPage || 'Perspective']);
 
   useFocusEffect(
     useCallback(() => {
@@ -54,8 +54,8 @@ const SelfReflection = ({ route, navigation }) => {
           Perspective: false,
           WillingnessToLearn: false
         });
-        setCurrentPage('AccurateSelfAssessment');
-        setHistory(['AccurateSelfAssessment']);
+        setCurrentPage('Perspective');
+        setHistory(['Perspective']);
       } else {
         setResponses({
           AccurateSelfAssessment: { 
@@ -79,8 +79,8 @@ const SelfReflection = ({ route, navigation }) => {
             answer: lastReport.answer_willing_learn,
           },
         });
-        setCurrentPage(initialPage || 'AccurateSelfAssessment');
-        setHistory([initialPage || 'AccurateSelfAssessment']);
+        setCurrentPage(initialPage || 'Perspective');
+        setHistory([initialPage || 'Perspective']);
       }
     }, [initialPage, reset, lastReport])
   );
