@@ -2,9 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Animated, Platform } from 'react-native';
 
 const CustomWidget = ({ visible, status }) => {
-  const translateY = useRef(new Animated.Value(-100)).current; // Use useRef to preserve the Animated.Value
+  const translateY = useRef(new Animated.Value(-100)).current;
 
-  const basePosition = 75; // Adjust base position
+  const basePosition = 75;
   const finalPosition = Platform.select({
     ios: basePosition + 30,
     android: basePosition + 10,
@@ -14,12 +14,12 @@ const CustomWidget = ({ visible, status }) => {
   useEffect(() => {
     if (visible) {
       Animated.spring(translateY, {
-        toValue: finalPosition, // Move to final position based on platform
+        toValue: finalPosition,
         useNativeDriver: true,
       }).start();
     } else {
       Animated.timing(translateY, {
-        toValue: -100, // Retract above the header
+        toValue: -100,
         duration: 300,
         useNativeDriver: true,
       }).start();
@@ -40,29 +40,36 @@ const CustomWidget = ({ visible, status }) => {
   };
 
   return (
-    <Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
-      {getStatusIndicator()}
-      <Text style={styles.message}>{status}</Text>
-    </Animated.View>
+    <View style={styles.wrapper}>
+      <Animated.View style={[styles.container, { transform: [{ translateY }] }]}>
+        {getStatusIndicator()}
+        <Text style={styles.message}>{status}</Text>
+      </Animated.View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  wrapper: {
+    flex: 1,
+    justifyContent: 'top',
+    alignItems: 'center',
     position: 'absolute',
+    width: '100%',
+    height: '100%',
+    zIndex: 1000,
+  },
+  container: {
     height: 60,
-    top: 0, // Ensures the widget starts at the top
-    backgroundColor: '#02077E', // Blue background
+    backgroundColor: '#02077E',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
-    borderRadius: 15, // Rounded borders
-    zIndex: 1000,
-    alignSelf: 'center', // Center horizontally
+    borderRadius: 15,
   },
   statusIndicator: {
-    marginRight: 10, // Adds space between the indicator and the text
+    marginRight: 10,
   },
   statusCircle: {
     width: 17,
@@ -71,7 +78,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   message: {
-    color: '#fff', // White text color
+    color: '#fff',
     fontSize: 16,
     fontFamily: 'JosefinSans_700Bold',
   },
