@@ -6,3 +6,4 @@ export { default as SelfReflection } from './SelfReflection';
 export { default as SignUp } from './SignUp';
 export { default as Login } from './LogIn';
 export { default as Calendar } from './Calendar';
+export { default as AccountInfo } from './AccountInfo';

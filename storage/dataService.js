@@ -274,6 +274,7 @@ export const DataSyncManager = () => {
   return {
     auth,
     login,
+    logout,
     signUp,
     addReport,
     updateExistingReport,

@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Home, BarChart, SelfReflection, Help, Graph, Login, SignUp, Calendar } from './screens/index';
+import { Home, BarChart, SelfReflection, Help, Graph, Login, SignUp, Calendar, AccountInfo } from './screens/index';
 import { COLORS } from './constants/index';
 import { useFonts, JosefinSans_700Bold, JosefinSans_500Medium, JosefinSans_300Light, JosefinSans_400Regular } from '@expo-google-fonts/josefin-sans';
 import { DataProvider, useData } from './storage/storageService';
@@ -31,6 +31,7 @@ const AuthenticatedDrawer = () => (
     <Drawer.Screen name="BarChart" component={BarChart} options={{ title: 'My Statistics' }} />
     <Drawer.Screen name="Calendar" component={Calendar} />
     <Drawer.Screen name="Help" component={Help} />
+    <Drawer.Screen name="AccountInfo" component={AccountInfo} options={{ title: 'My Account' }} />
   </Drawer.Navigator>
 );
 
