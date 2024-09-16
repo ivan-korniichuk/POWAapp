@@ -49,10 +49,10 @@ const SelfReflection = ({ route, navigation }) => {
         setVisitedBackup(visited);
         setResponses(initialResponsesState);
         setVisited({
-          AccurateSelfAssessment: true, // Set first page to visited
+          Perspective: true, // Set first page to visited
           OtherCentred: false,
-          Perspective: false,
-          WillingnessToLearn: false
+          WillingnessToLearn: false,
+          AccurateSelfAssessment: false,
         });
         setCurrentPage('Perspective');
         setHistory(['Perspective']);
