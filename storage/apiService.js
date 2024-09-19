@@ -125,3 +125,27 @@ export const updateReportAPI = async (jwt, report) => {
     return {message: error}
   }
 };
+
+export const updateUser = async (jwt, newUsername = undefined, newEmail = undefined, newPassword = undefined) => {
+    try {
+        const response = await fetch(`${BASE_URL}/api/users/profile/`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + jwt,
+            },
+            body: JSON.stringify({
+                username: newUsername,
+                email: newEmail,
+                password: newPassword,
+            })
+        });
+
+        return await response.json();
+    }
+    catch (error) {
+        console.error('Error updating user:', error);
+        return {message: error}
+    }
+}
+

@@ -1,4 +1,4 @@
-import { tryAuth, handleLogin, handleSignUp, addReportAPI, getReportsAPI, updateReportAPI } from './apiService';
+import { tryAuth, handleLogin, handleSignUp, addReportAPI, getReportsAPI, updateReportAPI, updateUser } from './apiService';
 import { useData } from './storageService';
 import { reportSchema } from './schemas';
 import { useEffect, useRef } from 'react';
@@ -24,6 +24,8 @@ export const DataSyncManager = () => {
     updateJWT,
     loadReports,
     loadUserData,
+    updateUserName,
+    updateUserEmail,
   } = useData();
 
   const auth = async () => {
@@ -271,6 +273,29 @@ export const DataSyncManager = () => {
     }
   };
 
+    const updateUserData = async (newUsername = undefined, newEmail = undefined, newPassword = undefined) => {
+        const apiResponse = await updateUser(user.jwt, newUsername, newEmail, newPassword);
+        console.log(apiResponse.message);
+        if ('_id' in apiResponse) {
+            setIsOnline(true);
+            if (newUsername) {
+                updateUserName(newUsername);
+            }
+            if (newEmail) {
+                updateUserEmail(newEmail);
+            }
+            return "Successfully updated your account details.";
+        }
+        else if (apiResponse.message.name == "TypeError") {
+            setIsOnline(false);
+            return "Unable to connect to the server, please try again later."
+        }
+        else {
+            console.error(apiResponse.message);
+            return apiResponse.message;
+        }
+    }
+
   return {
     auth,
     login,
@@ -278,5 +303,6 @@ export const DataSyncManager = () => {
     signUp,
     addReport,
     updateExistingReport,
+    updateUserData,
   };
 };
