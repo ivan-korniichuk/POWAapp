@@ -286,7 +286,7 @@ export const DataSyncManager = () => {
             }
             return "Successfully updated your account details.";
         }
-        else if (apiResponse.message.name == "TypeError") {
+        else if (apiResponse.message.name === "TypeError") {
             setIsOnline(false);
             return "Unable to connect to the server, please try again later."
         }

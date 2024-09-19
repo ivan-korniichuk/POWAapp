@@ -16,7 +16,7 @@ const AccountInfo = ({ navigation }) => {
     const [isSuccess, setIsSuccess] = useState(false);
 
     function test() {
-        updateUserData().then((response) => {
+        updateUserData(newUsername === user.username ? undefined : newUsername, newEmail === user.email ? undefined : newEmail, newPassword || undefined).then((response) => {
             setIsSuccess(response === 'success');
             setMessage(response);
             setTimeout(() => {setMessage(null)}, 2000)
