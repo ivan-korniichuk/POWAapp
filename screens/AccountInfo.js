@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, StyleSheet, TextInput, Text } from 'react-native';
 import { DataSyncManager } from '../storage/dataService';
 import { DefaultButton } from '../components';
@@ -15,7 +15,7 @@ const AccountInfo = ({ navigation }) => {
     const [message, setMessage] = useState(null);
     const [isSuccess, setIsSuccess] = useState(false);
 
-    function test() {
+    function update() {
         updateUserData(newUsername === user.username ? undefined : newUsername, newEmail === user.email ? undefined : newEmail, newPassword || undefined).then((response) => {
             setIsSuccess(response === 'success');
             setMessage(response);
@@ -24,7 +24,6 @@ const AccountInfo = ({ navigation }) => {
     }
 
     useEffect(() => {
-        console.log(user);
         setChangedDetails(newEmail !== user.email || newUsername !== user.username || newPassword !== '');
     }, [newEmail, newUsername, newPassword, user])
 
@@ -35,7 +34,7 @@ const AccountInfo = ({ navigation }) => {
             <TextInput style={styles.input} placeholder='Username' value={newUsername} onChangeText={setNewUsername}/>
             <TextInput style={styles.input} placeholder='New Password' value={newPassword} onChangeText={setNewPassword} secureTextEntry/>
             {message && <Text style={[styles.message, isSuccess ? styles.success : styles.error]}>{message}</Text>}
-            {changedDetails && <DefaultButton text="Update Account Details" onTouch={test} containerStyle={styles.updateButton}/>}
+            {changedDetails && <DefaultButton text="Update Account Details" onTouch={update} containerStyle={styles.updateButton}/>}
             <DefaultButton text="Logout" onTouch={logout} containerStyle={styles.logoutButton}/>
         </View>
     );

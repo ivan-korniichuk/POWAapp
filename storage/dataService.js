@@ -275,7 +275,6 @@ export const DataSyncManager = () => {
 
     const updateUserData = async (newUsername = undefined, newEmail = undefined, newPassword = undefined) => {
         const apiResponse = await updateUser(user.jwt, newUsername, newEmail, newPassword);
-        console.log(apiResponse.message);
         if ('_id' in apiResponse) {
             setIsOnline(true);
             if (newUsername) {
