@@ -133,7 +133,7 @@ export const DataProvider = ({ children }) => {
   const deleteReports = async () => {
     try {
       await AsyncStorage.removeItem(REPORTS_KEY);
-      setUser(userSchema);
+      setReports([]);
     } catch (e) {
       console.error('Failed to delete reports.', e);
     }
@@ -165,8 +165,12 @@ export const DataProvider = ({ children }) => {
 
   // this overrides current reports!!!
   const setAllReports = async (newReports) => {
-    if (newReports.length <= 0) {
-      console.error('there are no reports');
+    if (reports.length === 0 && newReports.length === 0) {
+      console.log('no changes needed');
+      return;
+    } else if (newReports.length === 0) {
+      console.log('there are no reports');
+      deleteReports();
       return;
     }
 

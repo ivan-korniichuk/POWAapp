@@ -96,7 +96,7 @@ export const DataSyncManager = () => {
     if (syncIntervalId.current === null) {
       syncIntervalId.current = setInterval(() => {
         syncAuth();
-      }, 60000);
+      }, 10000);
     }
   };
   
@@ -119,7 +119,6 @@ export const DataSyncManager = () => {
       } else {
         await setNewUser(responce.username, responce.email, responce.jwt);
       }
-      await syncReports(responce.jwt);
       setIsAuthenticated(true);
       setIsOnline(true);
       return "";
@@ -236,6 +235,8 @@ export const DataSyncManager = () => {
     if (responceReports && !responceReports.message) {
       let localReports = getlocalReports;
       const serverReports = responceReports;
+      const serverIDs = serverReports.map(report => report._id);
+      localReports = localReports.filter(r => serverIDs.includes(r._id));
 
       for (let i = 0; i < localReports.length; i++) {
         const localReport = localReports[i];
@@ -252,14 +253,20 @@ export const DataSyncManager = () => {
 
       const localIDs = localReports.map(report => report._id);
 
-      serverReports.forEach(serverReport => {
+      serverReports.forEach(async serverReport => {
         if (!localIDs.includes(serverReport._id)) {
           localReports.push(serverReport);
         } else {
-          if (serverReport.dateModifiedCli > localReports.find(r => r._id == serverReport._id).dateModifiedCli) {
+          console.log('serverReport.dateModifiedCli' + serverReport.dateModifiedCli);
+          console.log('localReports.dateModifiedCli' + localReports[0].dateModifiedCli);
+          const localReport = localReports.find(r => r._id == serverReport._id);
+          
+          if (serverReport.dateModifiedCli > localReport.dateModifiedCli) {
             // server has newer version, update local version
             localReports = localReports.filter(r => r._id != serverReport._id);
             localReports.push(serverReport);
+          } else if (serverReport.dateModifiedCli < localReport.dateModifiedCli) {
+            updateReportAPI(user.jwt, localReport);
           }
         }
       });
