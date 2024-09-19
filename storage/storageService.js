@@ -147,7 +147,7 @@ export const DataProvider = ({ children }) => {
     });
   };
 
-  const updateUserName = async (username = null, saveData = true) => {
+  const updateUserName = (username = null, saveData = true) => {
     setUser((prevUser) => {
       const updatedUser = { ...prevUser, username: username };
       saveData && saveUserData(updatedUser);
@@ -155,7 +155,7 @@ export const DataProvider = ({ children }) => {
     });
   };
 
-  const updateUserEmail = async (email = null, saveData = true) => {
+  const updateUserEmail = (email = null, saveData = true) => {
     setUser((prevUser) => {
       const updatedUser = { ...prevUser, email: email };
       saveData && saveUserData(updatedUser);
