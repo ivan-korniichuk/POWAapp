@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     header: {
         marginBottom: 30,
         fontSize: 25,
-        fontWeight: 600,
+        fontWeight: 'semibold',
     },
     updateButton: {
         width: 250,
